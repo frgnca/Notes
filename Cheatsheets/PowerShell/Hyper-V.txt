@@ -29,7 +29,7 @@ $VirtualMachineName = "VM-Name"
 $VirtualMachineGeneration = 2
 $VirtualMachineMemory = "4GB"
 $VirtualMachineLocation = "C:\VMs\$VirtualMachineName"
-$VirtualHardDriveLocation = "C:\VHD.vhdx"
+$VirtualHardDriveLocation = "C:\VMs\$VirtualMachineName\VHD.vhdx"
 $VirtualHardDriveSize = "50GB"
 $VirtualSwitchName = "vSwitch"
 ########################
