@@ -2,8 +2,8 @@
 Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
 GNU Affero General Public License v3.0
 
-This script creates, configures, and starts a new Hyper-V virtual machine for 
-the initial operating system installation
+This file is a PowerShell script that creates, configures, and starts a new 
+Hyper-V virtual machine for the initial operating system installation
 #>
 
 ################################################################################
