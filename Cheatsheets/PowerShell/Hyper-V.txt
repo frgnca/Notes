@@ -1,6 +1,8 @@
 Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
 GNU Affero General Public License v3.0
 
+This file is a PowerShell cheatsheet about Hyper-V
+
 
 ################################################################################
 # Install Hyper-V (reboot required)
