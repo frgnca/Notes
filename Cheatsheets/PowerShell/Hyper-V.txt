@@ -1,0 +1,145 @@
+Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+GNU Affero General Public License v3.0
+
+
+################################################################################
+# Install Hyper-V (reboot required)
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
+################################################################################
+# Get list of virtual switch
+Get-VMSwitch
+
+################################################################################
+# Create virtual switch
+$NetworkAdapterName = "Ethernet" # run "Get-NetAdapter" to find adapter’s name
+$VirtualSwitchName = "vSwitch"
+########################
+New-VMSwitch -Name $VirtualSwitchName -AllowManagementOS $True -NetAdapterName $NetAdapterName
+
+################################################################################
+# Remove virtual switch
+$VirtualSwitchName = "vSwitch"
+########################
+Remove-VMSwitch -Name $VirtualSwitchName
+
+################################################################################
+# Create virtual machine
+$VirtualMachineName = "VM-Name"
+$VirtualMachineGeneration = 2
+$VirtualMachineMemory = "4GB"
+$VirtualMachineLocation = "C:\VMs\$VirtualMachineName"
+$VirtualHardDriveLocation = "C:\VHD.vhdx"
+$VirtualHardDriveSize = "50GB"
+$VirtualSwitchName = "vSwitch"
+########################
+New-VM -Name $VirtualMachineName -MemoryStartupBytes $VirtualMachineMemory -Generation $Generation -NewVHDPath $VirtualHardDriveLocation -NewVHDSizeBytes VirtualHardDriveSize -Path $VirtualMachineLocation -SwitchName $VirtualSwitchName
+
+################################################################################
+# Rename virtual machine
+$VirtualMachineName = "VM-Name"
+$VirtualMachineNewName = "VM-NewName"
+########################
+Rename-VM $VirtualMachineName -NewName $VirtualMachineNewName
+
+################################################################################
+# Change virtual machine memory
+$VirtualMachineName = "VM-Name"
+$VirtualMachineMemory = "6GB"
+########################
+Set-VMMemory $VirtualMachineName -StartupBytes $VirtualMachineMemory
+
+################################################################################
+# Add DVD drive with installation media to virtual machine
+$VirtualMachineName = "VM-Name"
+$InstallationMediaLocation = "C:\image.iso"
+########################
+Add-VMDvdDrive -VMName $VirtualMachineName -ControllerNumber 0 -ControllerLocation 1 -Path $InstallationMediaLocation
+
+################################################################################
+# Set virtual machine to boot from DVD drive
+$VirtualMachineName = "VM-Name"
+########################
+$DVDDrive = Get-VMDvdDrive -VMName $VirtualMachineName
+Set-VMFirmware -VMName $VirtualMachineName -FirstBootDevice $DVDDrive
+
+################################################################################
+# Set virtual machine to disable SecureBoot
+$VirtualMachineName = "VM-Name"
+########################
+Set-VMFirmware -VMName $VMName -EnableSecureBoot Off
+
+################################################################################
+# Set virtual machine start action (autostart)
+$VirtualMachineName = "VM-Name"
+########################
+Set-VM -Name $VirtualMachineName -AutomaticStartAction Start
+
+################################################################################
+# Set virtual machine stop action (autosave)
+$VirtualMachineName = "VM-Name"
+########################
+Set-VM -Name $VirtualMachineName -AutomaticStopAction Save
+
+################################################################################
+# Connect to Virtual Machine video console
+$VirtualMachineName = "VM-Name"
+########################
+.\vmconnect.exe localhost $VirtualMachineName
+
+################################################################################
+# Remove virtual machine
+$VirtualMachineName = "VM-Name"
+########################
+Remove-VM -Name $VirtualMachineName
+
+################################################################################
+# Get virtual machine status
+$VirtualMachineName = "VM-Name"
+########################
+Get-VM -Name $VirtualMachineName
+
+################################################################################
+# Start virtual machine
+$VirtualMachineName = "VM-Name"
+########################
+Start-VM -Name $VirtualMachineName
+
+################################################################################
+# Reboot virtual machine
+$VirtualMachineName = "VM-Name"
+########################
+Restart-VM -Name $VirtualMachineName
+
+################################################################################
+# Stop virtual machine
+$VirtualMachineName = "VM-Name"
+########################
+Stop-VM -Name $VirtualMachineName
+
+################################################################################
+# Create virtual machine snapshot
+$VirtualMachineName = "VM-Name"
+$SnapshotName = "base_install"
+########################
+Get-VM -Name $VirtualMachineName | Checkpoint-VM -SnapshotName $SnapshotName
+
+################################################################################
+# Get a list of virtual machine snapshot
+$VirtualMachineName = "VM-Name"
+########################
+Get-VMSnapshot $VirtualMachineName
+
+################################################################################
+# Restore virtual machine snapshot
+$VirtualMachineName = "VM-Name"
+$SnapshotName = "base_install"
+########################
+Restore-VMSnapshot –Name $SnapshotName –VMName $VirtualMachineName
+
+################################################################################
+# Remove virtual machine snapshot
+$VirtualMachineName = "VM-Name"
+$SnapshotName = "base_install"
+########################
+Get-VM $VirtualMachineName | Remove-VMSnapshot -Name $SnapshotName
