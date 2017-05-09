@@ -1,0 +1,87 @@
+Install Ubuntu Server
+
+Select a language
+English
+
+Select your location
+Canada
+
+Configure the keyboard
+Detect keyboard layout:
+No
+Country of origin for the keyboard:
+French (Canada)
+Keyboard layout:
+French (Canada)
+
+Configure the network
+Hostname:
+ubuntu
+
+Set up users and passwords
+Full name for the new user:
+User
+Username for your account:
+user
+Choose a password for the new user:
+****************
+Re-enter password to verify:
+****************
+Encrypt your home directory?
+No
+
+Configure the clock
+Select your time zone:
+Eastern
+
+Partition disks
+Partitioning method:
+Guided - use entire disk and set up LVM
+Select disk to partition:
+SCSI1 (0,0,0) (sda) - 53.7 GB Msft Virtual Disk
+Write the changes to disks and configure LVM?
+Yes
+Amount of volume group to use for guided partitioning:
+max
+Force UEFI installation?
+Yes
+Finish partitioning and write changes to disk
+Write the changes to disks?
+Yes
+
+Configure the package manager
+HTTP proxy information (blank for none):
+Continue
+
+Configure tasksel
+How do you want to manage upgrades on this system?
+Install security updates automatically
+
+Software selection
+Choose software to install:
+standard system utilities
+openSSH server
+
+Finish the installation
+Make sure to remove the installation media
+
+Login
+
+Set static IP address (will take effect after reboot)
+sudo nano /etc/network/interfaces
+  auto eth0
+  iface eth0 inet static
+  address 192.168.1.100
+  netmask 255.255.255.0
+  gateway 192.168.1.1
+  dns-nameservers 8.8.8.8 8.8.4.4
+
+Enable firewall and allow ssh connection
+sudo ufw allow ssh
+sudo ufw enable
+
+Install required packages for snapshot support if this is a Hyper-V virtual machine
+sudo apt-get update && sudo apt-get -y upgrade
+sudo apt-get -y install --install-recommends --allow-unauthenticated linux-virtual-lts-xenial
+sudo apt-get -y install --install-recommends --allow-unauthenticated linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial
+sudo reboot
