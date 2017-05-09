@@ -33,7 +33,7 @@ $VirtualHardDriveLocation = "C:\VMs\$VirtualMachineName\VHD.vhdx"
 $VirtualHardDriveSize = "50GB"
 $VirtualSwitchName = "vSwitch"
 ########################
-New-VM -Name $VirtualMachineName -MemoryStartupBytes $VirtualMachineMemory -Generation $Generation -NewVHDPath $VirtualHardDriveLocation -NewVHDSizeBytes VirtualHardDriveSize -Path $VirtualMachineLocation -SwitchName $VirtualSwitchName
+New-VM -Name $VirtualMachineName -MemoryStartupBytes $VirtualMachineMemory -Generation $VirtualMachineGeneration -NewVHDPath $VirtualHardDriveLocation -NewVHDSizeBytes VirtualHardDriveSize -Path $VirtualMachineLocation -SwitchName $VirtualSwitchName
 
 ################################################################################
 # Rename virtual machine
