@@ -82,7 +82,7 @@ $VirtualMachineName = "VM-Name"
 Set-VM -Name $VirtualMachineName -AutomaticStopAction Save
 
 ################################################################################
-# Connect to Virtual Machine video console
+# Connect to virtual machine video console
 $VirtualMachineName = "VM-Name"
 ########################
 .\vmconnect.exe localhost $VirtualMachineName
