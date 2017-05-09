@@ -33,7 +33,7 @@ $VirtualHardDriveLocation = "C:\VMs\$VirtualMachineName\VHD.vhdx"
 $VirtualHardDriveSize = "50GB"
 $VirtualSwitchName = "vSwitch"
 ########################
-New-VM -Name $VirtualMachineName -MemoryStartupBytes $VirtualMachineMemory -Generation $VirtualMachineGeneration -NewVHDPath $VirtualHardDriveLocation -NewVHDSizeBytes VirtualHardDriveSize -Path $VirtualMachineLocation -SwitchName $VirtualSwitchName
+New-VM -Name $VirtualMachineName -MemoryStartupBytes $VirtualMachineMemory -Generation $VirtualMachineGeneration -NewVHDPath $VirtualHardDriveLocation -NewVHDSizeBytes $VirtualHardDriveSize -Path $VirtualMachineLocation -SwitchName $VirtualSwitchName
 
 ################################################################################
 # Rename virtual machine
@@ -67,7 +67,7 @@ Set-VMFirmware -VMName $VirtualMachineName -FirstBootDevice $DVDDrive
 # Set virtual machine to disable SecureBoot
 $VirtualMachineName = "VM-Name"
 ########################
-Set-VMFirmware -VMName $VMName -EnableSecureBoot Off
+Set-VMFirmware -VMName $VirtualMachineName -EnableSecureBoot Off
 
 ################################################################################
 # Set virtual machine start action (autostart)
