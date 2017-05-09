@@ -1,3 +1,11 @@
+
+Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+GNU Affero General Public License v3.0
+
+This file describes how to install Ubuntu Server 16.04.02
+
+
+################################################################################
 Install Ubuntu Server
 
 Select a language
