@@ -24,7 +24,7 @@ French (Canada)
 
 Configure the network
 Hostname:
-ubuntu
+computer
 
 Set up users and passwords
 Full name for the new user:
