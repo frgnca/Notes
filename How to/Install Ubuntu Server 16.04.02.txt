@@ -46,7 +46,7 @@ Partition disks
 Partitioning method:
 Guided - use entire disk and set up LVM
 Select disk to partition:
-SCSI1 (0,0,0) (sda) - 53.7 GB Msft Virtual Disk
+SCSI1 (0,0,0) (sda) - 10.7 GB Msft Virtual Disk
 Write the changes to disks and configure LVM?
 Yes
 Amount of volume group to use for guided partitioning:
