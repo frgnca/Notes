@@ -10,10 +10,10 @@ Hyper-V virtual machine for the initial operating system installation
 # Set VM parameters
 $VirtualMachineName = "VM-Name"
 $VirtualMachineGeneration = 2
-$VirtualMachineMemory = 4GB
+$VirtualMachineMemory = 2GB
 $VirtualMachineLocation = "C:\VMs\$VirtualMachineName"
 $VirtualHardDriveLocation = "C:\VMs\$VirtualMachineName\VHD.vhdx"
-$VirtualHardDriveSize = 50GB
+$VirtualHardDriveSize = 10GB
 $VirtualSwitchName = "vSwitch"
 $InstallationMediaLocation = "C:\image.iso"
 ########################
