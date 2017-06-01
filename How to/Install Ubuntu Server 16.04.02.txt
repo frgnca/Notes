@@ -6,90 +6,83 @@ This file describes how to install Ubuntu Server 16.04.02
 
 
 ################################################################################
-Install Ubuntu Server
-
+GNU GRUB
+<Install Ubuntu Server>
 Select a language
-English
-
+<English>
 Select your location
-Canada
-
+<Canada>
 Configure the keyboard
 Detect keyboard layout:
-No
+<No>
 Country of origin for the keyboard:
-French (Canada)
+<French (Canada)>
 Keyboard layout:
-French (Canada)
+<French (Canada)>
 
 Configure the network
-Hostname:
-computer
+Network autoconfiguration failed:
+<Continue>
+Network configuration method:
+<Configure network manually>
+IP address:
+<192.168.1.100/24>
+Gateway:
+<192.168.1.1>
+Name server addresses:
+<8.8.8.8 8.8.4.4>
 
+Hostname:
+<computer>
+Domain name:
+<>
 Set up users and passwords
 Full name for the new user:
-User
+<User>
 Username for your account:
-user
+<user>
 Choose a password for the new user:
-****************
+<password>
 Re-enter password to verify:
-****************
+<password>
 Encrypt your home directory?
-No
+<No>
 
 Configure the clock
 Select your time zone:
-Eastern
-
+<Eastern>
 Partition disks
 Partitioning method:
-Guided - use entire disk and set up LVM
+<Guided - use entire disk and set up LVM>
 Select disk to partition:
 SCSI1 (0,0,0) (sda) - 10.7 GB Msft Virtual Disk
 Write the changes to disks and configure LVM?
-Yes
+<Yes>
 Amount of volume group to use for guided partitioning:
-max
+<9.7 GB>
 Force UEFI installation?
-Yes
+<Yes>
 Finish partitioning and write changes to disk
 Write the changes to disks?
-Yes
+<Yes>
 
 Configure the package manager
 HTTP proxy information (blank for none):
-Continue
+<>
 
 Configure tasksel
 How do you want to manage upgrades on this system?
-Install security updates automatically
-
+<Install security updates automatically>
 Software selection
 Choose software to install:
-standard system utilities
-openSSH server
+<standard system utilities>
+<openSSH server>
 
 Finish the installation
 Make sure to remove the installation media
 
 Login
 
-Set static IP address (will take effect after reboot)
-sudo nano /etc/network/interfaces
-  auto eth0
-  iface eth0 inet static
-  address 192.168.1.100
-  netmask 255.255.255.0
-  gateway 192.168.1.1
-  dns-nameservers 8.8.8.8 8.8.4.4
-
 Enable firewall and allow ssh connection
-sudo ufw allow ssh
-sudo ufw enable
-
-Install required packages for snapshot support if this is a Hyper-V virtual machine
-sudo apt-get update && sudo apt-get -y upgrade
-sudo apt-get -y install --install-recommends --allow-unauthenticated linux-virtual-lts-xenial
-sudo apt-get -y install --install-recommends --allow-unauthenticated linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial
-sudo reboot
+<sudo ufw allow ssh>
+<sudo ufw enable>
