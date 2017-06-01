@@ -1,9 +1,10 @@
 <#
- Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
- GNU Affero General Public License v3.0
+  Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+  GNU Affero General Public License v3.0
 
- This file is a PowerShell script that creates, configures, and starts a new 
- Hyper-V virtual machine for the initial operating system installation
+  createVM.ps1
+  PowerShell script that creates, configures, and starts a new Hyper-V virtual
+  machine for the initial operating system installation
 #>
 
 ################################################################################
