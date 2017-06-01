@@ -1,12 +1,13 @@
 <#
-Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
-GNU Affero General Public License v3.0
+  Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+  GNU Affero General Public License v3.0
 
-torrentSERIE.ps1 is a PowerShell script to download TV series via torrent
+  torrentSERIE.ps1
+  PowerShell script to download TV series via torrent
 
 
-Requirements: -PsTorrent <https://github.com/assives/PsTorrent>
-              -A torrent client that supports magnet links
+  Requirements: -PsTorrent <https://github.com/assives/PsTorrent>
+                -A torrent client that supports magnet links
 #>
 
 ################################################################################
