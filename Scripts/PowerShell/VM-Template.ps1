@@ -43,7 +43,7 @@ Write-Host "Did you do everything in ""Install Ubuntu Server 16.04.02 on Hyper-V
 Pause
 
 # Export virtual machine
-Export-VM -Name $VirtualMachineName -Path D:\
+Export-VM -Name $VirtualMachineName -Path C:\
 
 # Remove virtual machine
 Remove-VM $VirtualMachineName
