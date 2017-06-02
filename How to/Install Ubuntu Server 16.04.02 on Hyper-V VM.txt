@@ -2,8 +2,9 @@
   Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
   GNU Affero General Public License v3.0
 
-  Install Ubuntu Server 16.04.02.txt
-  How to install Ubuntu Server 16.04.02
+  Install Ubuntu Server 16.04.02 on Hyper-V VM.txt
+  How to install Ubuntu Server 16.04.02 on a Hyper-V virtual machine
+  and configure it as a template VM
 
 
 ################################################################################
@@ -85,3 +86,5 @@ Install virtual machine requirements
 
 <sudo apt-get -y install --install-recommends linux-virtual-lts-xenial>
 <sudo apt-get -y install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial>
+
+<sudo shutdown now>
