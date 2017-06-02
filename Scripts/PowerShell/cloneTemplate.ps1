@@ -3,7 +3,7 @@
   GNU Affero General Public License v3.0
 
   cloneTemplate.ps1
-  PowerShell script that imports and starts a VM from a template
+  PowerShell script that imports and starts a VM from an exported template VM
 #>
 
 ################################################################################
