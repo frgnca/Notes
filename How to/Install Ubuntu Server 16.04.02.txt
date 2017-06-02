@@ -3,7 +3,7 @@
   GNU Affero General Public License v3.0
 
   Install Ubuntu Server 16.04.02.txt
-  How to install Ubuntu Server 16.04.02 on a machine without Internet access
+  How to install Ubuntu Server 16.04.02
 
 
 ################################################################################
@@ -21,25 +21,11 @@ Country of origin for the keyboard:
 Keyboard layout:
 <French (Canada)>
 
-Configure the network
-Network autoconfiguration failed:
-<Continue>
-Network configuration method:
-<Configure network manually>
-IP address:
-<192.168.1.100/24>
-Gateway:
-<192.168.1.1>
-Name server addresses:
-<8.8.8.8 8.8.4.4>
-
 Hostname:
 <computer>
-Domain name:
-<>
 Set up users and passwords
 Full name for the new user:
-<User>
+<>
 Username for your account:
 <user>
 Choose a password for the new user:
@@ -48,8 +34,9 @@ Re-enter password to verify:
 <password>
 Encrypt your home directory?
 <No>
-
 Configure the clock
+Is this time zone correct?
+<No>
 Select your time zone:
 <Eastern>
 Partition disks
@@ -83,7 +70,18 @@ Finish the installation
 Make sure to remove the installation media
 
 Login
-
 Enable firewall and allow ssh connection
 <sudo ufw allow ssh>
 <sudo ufw enable>
+Set static IP
+<sudo nano /etc/network/interfaces>
+<iface eth0 inet static>
+<address 192.168.1.100>
+<netmask 255.255.255.0>
+<gateway 192.168.1.1>
+<nameservers 8.8.8.8 8.8.4.4>
+Install virtual machine requirements
+<sudo apt-get update && sudo apt-get -y upgrade>
+
+<sudo apt-get -y install --install-recommends linux-virtual-lts-xenial>
+<sudo apt-get -y install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial>
