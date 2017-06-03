@@ -171,4 +171,4 @@ while(-Not(Test-Connection $VirtualMachineIP -Count 1 -Quiet))
 }
 
 # Display instructions
-Write-Host "Login with ssh to $VirtualMachineIP with user:$VirtualMachineUser and the password you created previously"
+Write-Host "Login by ssh at $VirtualMachineIP as user ""$VirtualMachineUser"" with the password you created previously"
