@@ -51,26 +51,26 @@ Write-Host "Wait (new virtual machine being created from template)"
 Write-Host ""
 
 # Get setupTemplate.sh file content
-$fromHOST = "D:\Documents\bash\setupTemplate.sh"
-$fileContent = Get-Content $fromHOST
+$setupTemplate = "D:\Documents\bash\setupTemplate.sh"
+$fileContent = Get-Content $setupTemplate
 
 # Find and replace line containing "newHostname=" with $VirtualMachineName
 $i = -1
 $find = "newHostname="
 $replace = "newHostname=""$VirtualMachineName"""
-$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $fromHOST } }
+$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
 
 # Find and replace line containing "newUser=" with $VirtualMachineUser
 $i = -1
 $find = "newUser="
 $replace = "newUser=""$VirtualMachineUser"""
-$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $fromHOST } }
+$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
 
 # Find and replace line containing "newIP=" with $VirtualMachineIP
 $i = -1
 $find = "newIP="
 $replace = "newIP=""$VirtualMachineIP"""
-$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $fromHOST } }
+$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
 
 # Import virtual machine template
 Import-VM -Path $TemplateConfig -Copy -GenerateNewId -SmartPagingFilePath $VirtualMachineFolder -SnapshotFilePath $SnapshotFolder -VhdDestinationPath $VHDFolder -VirtualMachinePath $VirtualMachineFolder > $null
@@ -121,20 +121,23 @@ while(-Not(Test-Connection "192.168.1.100" -Count 1 -Quiet))
 # ToDo: find something else more acceptable
 sleep(5)
 
-# Copy file from localhost to virtual machine
-$fromHOST = "D:\Documents\bash\setupTemplate.sh"
+# Copy setupTemplate.sh from localhost to virtual machine
 $toVM = "/home/user/"
-Copy-VMFile $VirtualMachineName -SourcePath $fromHOST -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
+Copy-VMFile $VirtualMachineName -SourcePath $setupTemplate -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
+
+# Copy .bash_profile from localhost to virtual machine
+$scriptCall = "sudo ~/./setupTemplate.sh"
+$scriptCall | Out-Unix -Path $bashProfile
+$toVM = "/home/user/"
+Copy-VMFile $VirtualMachineName -SourcePath $bashProfile -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
 
 # Display instructions
 Write-Host "########################"
 Write-Host ""
-Write-Host "ssh into 192.168.1.100 with user:user and password:password"
-Write-Host ""
-Write-Host "Type ""sudo ./setupTemplate.sh"""
+Write-Host "Login by ssh at 192.168.1.100 (user:password)"
 Write-Host "Type ""password"""
 Write-Host "Invent a new password"
-Write-Host "Type your newly invented password again"
+Write-Host "Retype your newly invented password"
 Write-Host ""
 Write-Host "Wait (updates being installed)"
 Write-Host "ssh session will close"
