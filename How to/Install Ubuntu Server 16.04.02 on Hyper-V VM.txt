@@ -8,83 +8,69 @@
 
 
 ################################################################################
-GNU GRUB
-<Install Ubuntu Server>
-Select a language
-<English>
-Select your location
-<Canada>
-Configure the keyboard
-Detect keyboard layout:
-<No>
-Country of origin for the keyboard:
-<French (Canada)>
-Keyboard layout:
-<French (Canada)>
+  GNU GRUB
+#  <Install Ubuntu Server>
+  Select a language
+#  <English>
+  Select your location
+## <Canada>
+  Configure the keyboard
+  Detect keyboard layout:
+#  <No>
+  Country of origin for the keyboard:
+## <French (Canada)>
+  Keyboard layout:
+#  <French (Canada)>
 
-Hostname:
-<computer>
-Set up users and passwords
-Full name for the new user:
-<>
-Username for your account:
-<user>
-Choose a password for the new user:
-<password>
-Re-enter password to verify:
-<password>
-Encrypt your home directory?
-<No>
-Configure the clock
-Is this time zone correct?
-<No>
-Select your time zone:
-<Eastern>
-Partition disks
-Partitioning method:
-<Guided - use entire disk and set up LVM>
-Select disk to partition:
-SCSI1 (0,0,0) (sda) - 10.7 GB Msft Virtual Disk
-Write the changes to disks and configure LVM?
-<Yes>
-Amount of volume group to use for guided partitioning:
-<9.7 GB>
-Force UEFI installation?
-<Yes>
-Finish partitioning and write changes to disk
-Write the changes to disks?
-<Yes>
+  Hostname:
+#  "ubuntu"
+  Set up users and passwords
+  Full name for the new user:
+#  ""
+  Username for your account:
+## "user"
+  Choose a password for the new user:
+## "password"
+  Re-enter password to verify:
+## "password"
+  Encrypt your home directory?
+#  <No>
+  Configure the clock
+  Is this time zone correct?
+## <No>
+  Select your time zone:
+## <Eastern>
+  Partition disks
+  Partitioning method:
+#  <Guided - use entire disk and set up LVM>
+  Select disk to partition:
+#  <SCSI1 (0,0,0) (sda) - 10.7 GB Msft Virtual Disk>
+  Write the changes to disks and configure LVM?
+## <Yes>
+  Amount of volume group to use for guided partitioning:
+#  "9.7 GB"
+  Force UEFI installation?
+## <Yes>
+  Finish partitioning and write changes to disk
+  Write the changes to disks?
+## <Yes>
 
-Configure the package manager
-HTTP proxy information (blank for none):
-<>
+  Configure the package manager
+  HTTP proxy information (blank for none):
+#  ""
 
-Configure tasksel
-How do you want to manage upgrades on this system?
-<Install security updates automatically>
-Software selection
-Choose software to install:
-<standard system utilities>
-<openSSH server>
+  Configure tasksel
+  How do you want to manage upgrades on this system?
+## <Install security updates automatically>
+  Software selection
+  Choose software to install: (select with spacebar)
+## <Samba file server>
+   <standard system utilities>
+## <openSSH server>
 
-Finish the installation
-Make sure to remove the installation media
+  Finish the installation
+#  <Continue>
 
-Login
-Enable firewall and allow ssh connection
-<sudo ufw allow ssh>
-<sudo ufw enable>
-Set static IP
-<sudo nano /etc/network/interfaces>
-<iface eth0 inet static>
-<address 192.168.1.100>
-<netmask 255.255.255.0>
-<gateway 192.168.1.1>
-<nameservers 8.8.8.8 8.8.4.4>
-Install virtual machine requirements
-<sudo apt-get update && sudo apt-get -y upgrade>
-
-<sudo apt-get -y install --install-recommends linux-virtual-lts-xenial>
-<sudo apt-get -y install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial>
-
-<sudo shutdown now>
+##Login with localhost console (user:password)
+##Type "ifconfig" and check IP address (192.168.1.???)
+##Input temporary IP address in VM-Template.ps1
