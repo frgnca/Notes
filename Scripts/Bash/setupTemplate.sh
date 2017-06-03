@@ -8,9 +8,9 @@
 
 ################################################################################
 # Set new configuration
-newUser="test"
-newHostname="test1"
-newIP="192.168.1.31"
+newHostname="computer"
+newUser="user"
+newIP="192.168.1.100"
 ########################
 # Set internal variables
 templateUser="user"
@@ -18,7 +18,7 @@ templateHostname="computer"
 templateIP="192.168.1.100"
 
 # Create new user
-adduser $newUser
+adduser --gecos "" $newUser
 usermod -aG sudo $newUser
 
 # Bring up to date
@@ -60,5 +60,5 @@ sed -i "s/$templateIP/$newIP/" /etc/hosts
 sed -i "s/$templateHostname/$newHostname/" /etc/hostname
 sed -i "s/$templateHostname/$newHostname/" /etc/hosts
 
-# Reboot
-reboot
+# Shutdown
+shutdown now
