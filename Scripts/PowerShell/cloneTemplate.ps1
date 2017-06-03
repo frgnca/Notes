@@ -131,13 +131,16 @@ $scriptCall | Out-Unix -Path $bashProfile
 $toVM = "/home/user/"
 Copy-VMFile $VirtualMachineName -SourcePath $bashProfile -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
 
+# Open ssh session to template vm with PuTTY
+cd "C:\Program Files\PuTTY"
+.\putty.exe -ssh user@192.168.1.100 -pw "password"
+
 # Display instructions
 Write-Host "########################"
 Write-Host ""
-Write-Host "Login by ssh at 192.168.1.100 (user:password)"
-Write-Host "Type ""password"""
-Write-Host "Invent a new password"
-Write-Host "Retype your newly invented password"
+Write-Host "First:  Type ""password"""
+Write-Host "Second: Invent a new password"
+Write-Host "Third:  Retype your newly invented password"
 Write-Host ""
 Write-Host "Wait (updates being installed)"
 Write-Host "ssh session will close"
@@ -170,5 +173,13 @@ while(-Not(Test-Connection $VirtualMachineIP -Count 1 -Quiet))
     # Do nothing, try again
 }
 
+# Wait 5 seconds after virtual machine starts responding to ping
+# ToDo: find something else more acceptable
+sleep(5)
+
 # Display instructions
-Write-Host "Login by ssh at $VirtualMachineIP as user ""$VirtualMachineUser"" with the password you created previously"
+Write-Host "Done"
+
+# Open ssh session to newly configured virtual machine with PuTTY
+cd "C:\Program Files\PuTTY"
+.\putty.exe -ssh $VirtualMachineUser@$VirtualMachineIP
