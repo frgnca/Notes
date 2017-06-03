@@ -151,7 +151,8 @@ while((Get-VM $VirtualMachineName | Select-Object -Property State).State -ne "Of
 }
 
 # Display instructions
-
+Write-Host "########################"
+Write-Host ""
 Write-Host "Wait (""base"" checkpoint being created)"
 
 # Create snapshot "base"
