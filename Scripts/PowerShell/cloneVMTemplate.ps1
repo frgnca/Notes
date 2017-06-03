@@ -2,7 +2,7 @@
   Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
   GNU Affero General Public License v3.0
 
-  cloneTemplate.ps1
+  cloneVMTemplate.ps1
   PowerShell script that imports and starts a VM from an exported template VM
 #>
 
@@ -18,10 +18,10 @@ $startAction = "Nothing" #[Nothing, Start, StartIfRunning]
 # Set internal variables
 $VirtualSwitchName = "vSwitch"
 $VirtualMachineGeneration = 2
-$VirtualMachineFolder = "C:\VMs\"+$VirtualMachineName
+$VirtualMachineFolder = "D:\VMs\"+$VirtualMachineName
 $SnapshotFolder = $VirtualMachineFolder+"\Snapshots"
 $VHDFolder = $VirtualMachineFolder+"\Virtual Hard Disks"
-$TemplateConfig = "C:\VM-Template\Virtual Machines\FB151D6C-025E-4C96-9FDD-55DA5D04757E.vmcx"
+$TemplateConfig = "D:\VM-Template\Virtual Machines\EF055542-D1E1-4FC2-B77F-6F2D769F58AE.vmcx"
 
 # Function to write unix style files by <https://picuspickings.blogspot.ca/2014/04/out-unix-function-to-output-unix-text_17.html>
 function Out-Unix
@@ -44,15 +44,18 @@ function Out-Unix
     }
 }
 
+# ToDo: Check parameters validity, duplicate host/vm name, IP address, etc.
+
 # Display instructions
 Write-Host "########################"
 Write-Host ""
 Write-Host "Wait (new virtual machine being created from template)"
 Write-Host ""
 
-# Get setupTemplate.sh file content
+# Copy setupTemplate.sh.old to setupTemplate.sh
+$fileContent = Get-Content "D:\Documents\bash\setupTemplate.sh.old"
 $setupTemplate = "D:\Documents\bash\setupTemplate.sh"
-$fileContent = Get-Content $setupTemplate
+$fileContent | Out-Unix -Path $setupTemplate
 
 # Find and replace line containing "newHostname=" with $VirtualMachineName
 $i = -1
@@ -126,6 +129,7 @@ $toVM = "/home/user/"
 Copy-VMFile $VirtualMachineName -SourcePath $setupTemplate -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
 
 # Copy .bash_profile from localhost to virtual machine
+$bashProfile = "D:\Documents\bash\.bash_profile"
 $scriptCall = "sudo ~/./setupTemplate.sh"
 $scriptCall | Out-Unix -Path $bashProfile
 $toVM = "/home/user/"
@@ -138,11 +142,11 @@ cd "C:\Program Files\PuTTY"
 # Display instructions
 Write-Host "########################"
 Write-Host ""
-Write-Host "First:  Type ""password"""
-Write-Host "Second: Invent a new password"
-Write-Host "Third:  Retype your newly invented password"
+Write-Host "Type ""password"""
+Write-Host "Invent a new password"
+Write-Host "Retype your newly invented password"
 Write-Host ""
-Write-Host "Wait (updates being installed)"
+Write-Host "Then wait (updates being installed)"
 Write-Host "ssh session will close"
 Write-Host ""
 
