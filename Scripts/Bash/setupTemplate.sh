@@ -9,7 +9,7 @@
 ################################################################################
 # Set new configuration
 newUser="test"
-newHostname="test01"
+newHostname="test1"
 newIP="192.168.1.31"
 ########################
 # Set internal variables
