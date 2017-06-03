@@ -4,6 +4,10 @@
 
   cloneVMTemplate.ps1
   PowerShell script that imports and starts a VM from an exported template VM
+  
+  
+  Requirements:
+  PuTTY
 #>
 
 ################################################################################
