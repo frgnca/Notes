@@ -12,9 +12,13 @@ $VirtualMachineName = "test01"
 $fromHOST = "C:\file.txt"
 $toVM = "/home/test/"
 ########################
-# Enable VMIntegrationService if it is not already
-# ToDo: if Get-VMIntegrationService....
-#Enable-VMIntegrationService -Name "guest service interface" -VMName $VirtualMachineName #-Name "Interface de services d’invité"
+# If integration service is not enabled
+$VMIntegr = Get-VMIntegrationService -VMName $VirtualMachineName | Where-Object -Property Name -EQ "Interface de services d’invité" | Select-Object Enabled
+if($VMIntegr.Enabled -ne "True")
+{
+    # Enable integration service
+    Enable-VMIntegrationService -Name "Interface de services d’invité" -VMName $VirtualMachineName #-Name "guest service interface"
+}
 
 # Copy file from localhost to virtual machine
 Copy-VMFile $VirtualMachineName -SourcePath $fromHOST -DestinationPath $toVM -CreateFullPath -FileSource Host
