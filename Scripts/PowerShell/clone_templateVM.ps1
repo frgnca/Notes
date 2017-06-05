@@ -2,30 +2,51 @@
   Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
   GNU Affero General Public License v3.0
 
-  cloneVMTemplate.ps1
-  PowerShell script that imports and starts a VM from an exported template VM
-  
-  
+  clone_templateVM.ps1
+  PowerShell script that imports and starts a virtual machine
+  from an exported template
+
+
   Requirements:
-  PuTTY
+  PuTTY http://www.putty.org/
 #>
 
 ################################################################################
 # Set new virtual machine parameters
 $VirtualMachineName = "test1"
+$VirtualHardDriveSize = 10GB #[10GB+] # ToDo: auto resize in ubuntu
+$VirtualMachineMemory = 2GB #[2GB+]
+$VirtualSwitchName = "vSwitch"
+$VirtualMachineLocation = "D:\VMs\"
+$startAction = "StartIfRunning" #[Nothing, Start, StartIfRunning]
+$VirtualMachineIP = "192.168.1.31" # ToDo: Add dhcp posibility
 $VirtualMachineUser = "test"
-$VirtualMachineIP = "192.168.1.31"
-$VirtualMachineMemory = 2GB #2GB+
-$VirtualHardDriveSize = 10GB #10GB+
-$startAction = "Nothing" #[Nothing, Start, StartIfRunning]
+$templateVMName = "_template"
 ########################
 # Set internal variables
-$VirtualSwitchName = "vSwitch"
 $VirtualMachineGeneration = 2
-$VirtualMachineFolder = "D:\VMs\"+$VirtualMachineName
+$VirtualMachineFolder = $VirtualMachineLocation+$VirtualMachineName
 $SnapshotFolder = $VirtualMachineFolder+"\Snapshots"
 $VHDFolder = $VirtualMachineFolder+"\Virtual Hard Disks"
-$TemplateConfig = "D:\VM-Template\Virtual Machines\EF055542-D1E1-4FC2-B77F-6F2D769F58AE.vmcx"
+$templateConfig = "D:\$templateVMName\Virtual Machines\CAC1305D-B2DE-41D7-B9FE-4D2FDADE7F9E.vmcx" # ToDo: wildcard
+$displayRAMsizeGB = $VirtualMachineMemory / 1024 /1024 / 1024
+$displayVHDsizeGB = $VirtualHardDriveSize / 1024 /1024 / 1024
+
+# Display VM parameters
+Write-Host "
+
+########################
+
+         Name: $VirtualMachineName
+          VHD: $displayVHDsizeGB GB
+          RAM:  $displayRAMsizeGB GB
+           IP: $VirtualMachineIP
+  StartAction: $startAction
+         User: $VirtualMachineUser  
+Only continue if the parameters are correct"
+
+# Chance to stop before proceeding
+Pause
 
 # Function to write unix style files by <https://picuspickings.blogspot.ca/2014/04/out-unix-function-to-output-unix-text_17.html>
 function Out-Unix
@@ -48,42 +69,19 @@ function Out-Unix
     }
 }
 
-# ToDo: Check parameters validity, duplicate host/vm name, IP address, etc.
+# ToDo+: Check parameters validity, duplicate host/vm name, IP address, folder, etc.
 
 # Display instructions
 Write-Host "########################"
 Write-Host ""
-Write-Host "Wait (new virtual machine being created from template)"
+Write-Host "Wait time 5 min ( 83% when done)"
 Write-Host ""
 
-# Copy setupTemplate.sh.old to setupTemplate.sh
-$fileContent = Get-Content "D:\Documents\bash\setupTemplate.sh.old"
-$setupTemplate = "D:\Documents\bash\setupTemplate.sh"
-$fileContent | Out-Unix -Path $setupTemplate
-
-# Find and replace line containing "newHostname=" with $VirtualMachineName
-$i = -1
-$find = "newHostname="
-$replace = "newHostname=""$VirtualMachineName"""
-$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
-
-# Find and replace line containing "newUser=" with $VirtualMachineUser
-$i = -1
-$find = "newUser="
-$replace = "newUser=""$VirtualMachineUser"""
-$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
-
-# Find and replace line containing "newIP=" with $VirtualMachineIP
-$i = -1
-$find = "newIP="
-$replace = "newIP=""$VirtualMachineIP"""
-$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
-
 # Import virtual machine template
-Import-VM -Path $TemplateConfig -Copy -GenerateNewId -SmartPagingFilePath $VirtualMachineFolder -SnapshotFilePath $SnapshotFolder -VhdDestinationPath $VHDFolder -VirtualMachinePath $VirtualMachineFolder > $null
+Import-VM -Path $templateConfig -Copy -GenerateNewId -SmartPagingFilePath $VirtualMachineFolder -SnapshotFilePath $SnapshotFolder -VhdDestinationPath $VHDFolder -VirtualMachinePath $VirtualMachineFolder > $null
 
 # Rename virtual machine
-Rename-VM -Name "VM-Template" -NewName $VirtualMachineName
+Rename-VM -Name $templateVMName -NewName $VirtualMachineName
 
 # Connect virtual machine to network
 Connect-VMNetworkAdapter -VMName $VirtualMachineName -SwitchName $VirtualSwitchName
@@ -128,6 +126,29 @@ while(-Not(Test-Connection "192.168.1.100" -Count 1 -Quiet))
 # ToDo: find something else more acceptable
 sleep(5)
 
+# Copy setupTemplate.sh.old to setupTemplate.sh
+$fileContent = Get-Content "D:\Documents\bash\setupTemplate.sh.old"
+$setupTemplate = "D:\Documents\bash\setupTemplate.sh"
+$fileContent | Out-Unix -Path $setupTemplate
+
+# Find and replace line containing "newHostname=" with $VirtualMachineName
+$i = -1
+$find = "newHostname="
+$replace = "newHostname=""$VirtualMachineName"""
+$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
+
+# Find and replace line containing "newUser=" with $VirtualMachineUser
+$i = -1
+$find = "newUser="
+$replace = "newUser=""$VirtualMachineUser"""
+$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
+
+# Find and replace line containing "newIP=" with $VirtualMachineIP
+$i = -1
+$find = "newIP="
+$replace = "newIP=""$VirtualMachineIP"""
+$fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
+
 # Copy setupTemplate.sh from localhost to virtual machine
 $toVM = "/home/user/"
 Copy-VMFile $VirtualMachineName -SourcePath $setupTemplate -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
@@ -150,7 +171,7 @@ Write-Host "Type ""password"""
 Write-Host "Invent a new password"
 Write-Host "Retype your newly invented password"
 Write-Host ""
-Write-Host "Then wait (updates being installed)"
+Write-Host "Wait time  1 min (100% when done)"
 Write-Host "ssh session will close"
 Write-Host ""
 
@@ -161,16 +182,8 @@ while((Get-VM $VirtualMachineName | Select-Object -Property State).State -ne "Of
     sleep(1)
 }
 
-# Display instructions
-Write-Host "########################"
-Write-Host ""
-Write-Host "Wait (""base"" checkpoint being created)"
-
 # Create snapshot "base"
 Get-VM -Name $VirtualMachineName | Checkpoint-VM -SnapshotName "base"
-
-# Display instructions
-Write-Host "Wait (virtual machine starting)"
 
 # Start virtual machine
 Start-VM $VirtualMachineName
@@ -182,11 +195,16 @@ while(-Not(Test-Connection $VirtualMachineIP -Count 1 -Quiet))
 }
 
 # Wait 5 seconds after virtual machine starts responding to ping
-# ToDo: find something else more acceptable
+# ToDo: how to confirm ssh request won't be too soon?
 sleep(5)
 
 # Display instructions
-Write-Host "Done"
+Write-Host "
+########################
+
+Done
+
+########################"
 
 # Open ssh session to newly configured virtual machine with PuTTY
 cd "C:\Program Files\PuTTY"
