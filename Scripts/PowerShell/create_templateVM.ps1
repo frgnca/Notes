@@ -17,12 +17,13 @@ $VirtualMachineName = "_template"
 $VirtualHardDriveSize = 10GB
 $VirtualMachineMemory = 2GB
 $VirtualSwitchName = "vSwitch"
-$VirtualMachineLocation = "D:\VMs\"
+$VirtualMachineLocation = "D:\VMs"
 $InstallationMediaLocation = "D:\media\ubuntu-16.04.2-server-amd64.iso"
 ########################
 # Set internal variables
 $VirtualMachineGeneration = 2
-$VirtualHardDriveLocation = "$VirtualMachineLocation$VirtualMachineName\Virtual Hard Disks\VHD.vhdx"
+$VirtualHardDriveLocation = "$VirtualMachineLocation\$VirtualMachineName\Virtual Hard Disks\VHD.vhdx"
+$exportPath = "D:\media\!Documents"
 $displayRAMsizeGB = $VirtualMachineMemory / 1024 /1024 / 1024
 $displayVHDsizeGB = $VirtualHardDriveSize / 1024 /1024 / 1024
 
@@ -278,16 +279,16 @@ while((Get-VM $VirtualMachineName).State -ne "Off")
 }
 
 # Create a base snapshot
-Checkpoint-VM -VMName $VirtualMachineName -SnapshotName "base" > $null
+Checkpoint-VM -VMName $VirtualMachineName -SnapshotName "template" > $null
 
 # Export virtual machine
-Export-VM -Name $VirtualMachineName -Path D:\
+Export-VM -Name $VirtualMachineName -Path $exportPath
 
 # Remove virtual machine template from Hyper-V
-Remove-VM $VirtualMachineName -Force
+#Remove-VM $VirtualMachineName -Force
 
 # Delete virtual machine folder
-Remove-Item -Recurse -Force "D:\VMs\$VirtualMachineName"
+#1Remove-Item -Recurse -Force "D:\VMs\$VirtualMachineName"
 
 # Display instructions
 Write-Host "
