@@ -8,21 +8,21 @@
 
 ################################################################################
 # Set new configuration
-newHostname="computer"
-newUser="user"
-newIP="192.168.1.100"
+newHostname="test1"
+newUser="test"
+newIP="192.168.1.31"
 ########################
 # Set internal variables
 templateUser="user"
-templateHostname="computer"
+templateHostname="ubuntu"
 templateIP="192.168.1.100"
 
 # Create new user
-adduser --gecos "" $newUser
-usermod -aG sudo $newUser
+sudo adduser --gecos "" $newUser
+sudo usermod -aG sudo $newUser
 
 # Bring up to date
-apt-get update && apt-get -y upgrade
+sudo apt-get update > null && sudo apt-get -y upgrade > null
 
 # Create shell script to remove template user and script call from /etc/rc.local
 echo "#!/bin/bash" > removeTemplateUser.sh
@@ -50,15 +50,15 @@ chmod +x removeTemplateUser.sh
 # Call script from /etc/rc.local on next boot
 exit0="exit 0"
 scriptCall="/home/user/./removeTemplateUser.sh"
-sed -i "s#$exit0#$scriptCall#" /etc/rc.local
+sudo sed -i "s#$exit0#$scriptCall#" /etc/rc.local
 
 # Change static IP
-sed -i "s/$templateIP/$newIP/" /etc/network/interfaces
-sed -i "s/$templateIP/$newIP/" /etc/hosts
+sudo sed -i "s/$templateIP/$newIP/" /etc/network/interfaces
+sudo sed -i "s/$templateIP/$newIP/" /etc/hosts
 
 # Change hostname
-sed -i "s/$templateHostname/$newHostname/" /etc/hostname
-sed -i "s/$templateHostname/$newHostname/" /etc/hosts
+sudo sed -i "s/$templateHostname/$newHostname/" /etc/hostname
+sudo sed -i "s/$templateHostname/$newHostname/" /etc/hosts
 
 # Shutdown
-shutdown now
+sudo shutdown now
