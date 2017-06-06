@@ -17,7 +17,7 @@ $VirtualMachineName = "test1"
 $VirtualHardDriveSize = 10GB #[10GB+] # ToDo: auto resize in ubuntu
 $VirtualMachineMemory = 2GB #[2GB+]
 $VirtualSwitchName = "vSwitch"
-$VirtualMachineLocation = "D:\VMs\"
+$VirtualMachineLocation = "D:\VMs"
 $startAction = "StartIfRunning" #[Nothing, Start, StartIfRunning]
 $VirtualMachineIP = "192.168.1.31" # ToDo: Add dhcp posibility
 $VirtualMachineUser = "test"
@@ -25,10 +25,14 @@ $templateVMName = "_template"
 ########################
 # Set internal variables
 $VirtualMachineGeneration = 2
-$VirtualMachineFolder = $VirtualMachineLocation+$VirtualMachineName
+$VirtualMachineFolder = "$VirtualMachineLocation\$VirtualMachineName"
 $SnapshotFolder = $VirtualMachineFolder+"\Snapshots"
 $VHDFolder = $VirtualMachineFolder+"\Virtual Hard Disks"
-$templateConfig = "D:\$templateVMName\Virtual Machines\CAC1305D-B2DE-41D7-B9FE-4D2FDADE7F9E.vmcx" # ToDo: wildcard
+$templateConfig = "D:\media\!Documents\VMs\$templateVMName\Virtual Machines\0B08B36D-E8C3-40BC-AE21-D725EF10A3B1.vmcx" # ToDo: wildcard
+$bashFolder = "D:\media\!Documents\bash"
+$fileContent = Get-Content "$bashFolder\setupTemplate.sh.old"
+$bashProfile = "$bashFolder\.bash_profile"
+$setupTemplate = "$bashFolder\setupTemplate.sh"
 $displayRAMsizeGB = $VirtualMachineMemory / 1024 /1024 / 1024
 $displayVHDsizeGB = $VirtualHardDriveSize / 1024 /1024 / 1024
 
@@ -38,8 +42,8 @@ Write-Host "
 ########################
 
          Name: $VirtualMachineName
-          VHD: $displayVHDsizeGB GB
-          RAM:  $displayRAMsizeGB GB
+          VHD:  $displayVHDsizeGB GB
+          RAM:   $displayRAMsizeGB GB
            IP: $VirtualMachineIP
   StartAction: $startAction
          User: $VirtualMachineUser  
@@ -72,10 +76,10 @@ function Out-Unix
 # ToDo+: Check parameters validity, duplicate host/vm name, IP address, folder, etc.
 
 # Display instructions
-Write-Host "########################"
-Write-Host ""
-Write-Host "Wait time 5 min ( 83% when done)"
-Write-Host ""
+Write-Host '########################
+
+Wait time 5 min ( 83% when done)
+'
 
 # Import virtual machine template
 Import-VM -Path $templateConfig -Copy -GenerateNewId -SmartPagingFilePath $VirtualMachineFolder -SnapshotFilePath $SnapshotFolder -VhdDestinationPath $VHDFolder -VirtualMachinePath $VirtualMachineFolder > $null
@@ -127,8 +131,6 @@ while(-Not(Test-Connection "192.168.1.100" -Count 1 -Quiet))
 sleep(5)
 
 # Copy setupTemplate.sh.old to setupTemplate.sh
-$fileContent = Get-Content "D:\Documents\bash\setupTemplate.sh.old"
-$setupTemplate = "D:\Documents\bash\setupTemplate.sh"
 $fileContent | Out-Unix -Path $setupTemplate
 
 # Find and replace line containing "newHostname=" with $VirtualMachineName
@@ -154,7 +156,6 @@ $toVM = "/home/user/"
 Copy-VMFile $VirtualMachineName -SourcePath $setupTemplate -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
 
 # Copy .bash_profile from localhost to virtual machine
-$bashProfile = "D:\Documents\bash\.bash_profile"
 $scriptCall = "sudo ~/./setupTemplate.sh"
 $scriptCall | Out-Unix -Path $bashProfile
 $toVM = "/home/user/"
@@ -165,15 +166,15 @@ cd "C:\Program Files\PuTTY"
 .\putty.exe -ssh user@192.168.1.100 -pw "password"
 
 # Display instructions
-Write-Host "########################"
-Write-Host ""
-Write-Host "Type ""password"""
-Write-Host "Invent a new password"
-Write-Host "Retype your newly invented password"
-Write-Host ""
-Write-Host "Wait time  1 min (100% when done)"
-Write-Host "ssh session will close"
-Write-Host ""
+Write-Host '########################
+
+## "password"
+##Invent a new password
+##Retype your newly invented password
+
+Wait time  1+min ( 99% when done)
+ssh session will close
+'
 
 # While virtual machine is not off
 while((Get-VM $VirtualMachineName | Select-Object -Property State).State -ne "Off")
@@ -181,6 +182,14 @@ while((Get-VM $VirtualMachineName | Select-Object -Property State).State -ne "Of
     # Wait for a second
     sleep(1)
 }
+
+# Display instructions
+Write-Host "########################
+
+Wait time  1 min (100% when done)
+"
+
+# ToDo: close old putty window
 
 # Create snapshot "base"
 Get-VM -Name $VirtualMachineName | Checkpoint-VM -SnapshotName "base"
@@ -199,8 +208,7 @@ while(-Not(Test-Connection $VirtualMachineIP -Count 1 -Quiet))
 sleep(5)
 
 # Display instructions
-Write-Host "
-########################
+Write-Host "########################
 
 Done
 
