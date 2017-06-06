@@ -3,8 +3,7 @@
   GNU Affero General Public License v3.0
 
   create_templateVM.ps1
-  PowerShell script that creates, configures, and starts a new Hyper-V virtual
-  machine for the initial operating system installation
+  PowerShell script that creates, configures, and exports a template Hyper-V VM
 
 
   Requirements:
@@ -19,11 +18,11 @@ $VirtualMachineMemory = 2GB
 $VirtualSwitchName = "vSwitch"
 $VirtualMachineLocation = "D:\VMs"
 $InstallationMediaLocation = "D:\media\ubuntu-16.04.2-server-amd64.iso"
+$exportPath = "D:\media\!Documents\VMs"
 ########################
 # Set internal variables
 $VirtualMachineGeneration = 2
 $VirtualHardDriveLocation = "$VirtualMachineLocation\$VirtualMachineName\Virtual Hard Disks\VHD.vhdx"
-$exportPath = "D:\media\!Documents"
 $displayRAMsizeGB = $VirtualMachineMemory / 1024 /1024 / 1024
 $displayVHDsizeGB = $VirtualHardDriveSize / 1024 /1024 / 1024
 
@@ -198,6 +197,7 @@ while(-Not(Test-Connection $tempIP -Count 1 -Quiet))
 }
 
 # ToDo: Close localhost console
+# ToDo: wget a script that does the following instead of pasting commands
 
 # Display instructions 1 of 5
 $command = "sudo ufw allow ssh > null && sudo ufw allow 137 > null && sudo ufw allow 138 > null && sudo ufw allow 139 > null && sudo ufw allow 445 > null && sudo ufw --force enable > null && sudo sed -i ""s#iface eth0 inet dhcp#iface eth0 inet static#"" /etc/network/interfaces > null && echo -e ""  address 192.168.1.100\n  netmask 255.255.255.0\n  gateway 192.168.1.1\n  dns-nameservers 8.8.8.8 8.8.4.4"" | sudo tee -a /etc/network/interfaces > null && echo -e ""[root]\n   comment = read only\n   path = /\n   browsable = yes\n   read only = yes\n   guest ok = yes"" | sudo tee -a /etc/samba/smb.conf > null"
@@ -285,10 +285,10 @@ Checkpoint-VM -VMName $VirtualMachineName -SnapshotName "template" > $null
 Export-VM -Name $VirtualMachineName -Path $exportPath
 
 # Remove virtual machine template from Hyper-V
-#Remove-VM $VirtualMachineName -Force
+Remove-VM $VirtualMachineName -Force
 
 # Delete virtual machine folder
-#1Remove-Item -Recurse -Force "D:\VMs\$VirtualMachineName"
+Remove-Item -Recurse -Force "$VirtualMachineLocation\$VirtualMachineName"
 
 # Display instructions
 Write-Host "
