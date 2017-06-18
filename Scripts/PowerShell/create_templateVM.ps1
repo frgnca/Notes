@@ -142,7 +142,9 @@ Wait time  1 min (  12% when done)
 Wait time 25+min (  51% when done)
 
   Finish the installation
-#  Select <Continue>'
+#  Select <Continue>
+
+Wait time  1 min (  52% when done)'
 
 # Connect to virtual machine video console
 vmconnect.exe localhost $VirtualMachineName
@@ -158,19 +160,6 @@ while((Get-VM -Name $VirtualMachineName).Uptime.Ticks -gt $previousTickcount)
 # Make sure virtual machine stays stopped
 Stop-VM $VirtualMachineName -Force > $null
 
-# Display instructions
-Write-Host '
-########################
-
-Wait time  1 min (  52% when done)
-
-  Login with localhost console (username:password)
-## Type "username"
-## Type "password"
-  Find IP address (192.168.1.???)
-## Type "ifconfig"
-## Type the IP address bellow when found'
-
 # While virtual machine is not off
 while((Get-VM -Name $VirtualMachineName).State -ne "Off")
 {
@@ -183,6 +172,17 @@ Checkpoint-VM -VMName $VirtualMachineName -SnapshotName "post-install" > $null
 
 # Start virtual machine
 Start-VM $VirtualMachineName > $null
+
+# Display instructions
+Write-Host '
+########################
+
+  Login with localhost console (username:password)
+## Type "username"
+## Type "password"
+  Find IP address (192.168.1.???)
+## Type "ifconfig"
+## Type the IP address bellow when found'
 
 # Get temporary IP address
 $tempIP = Read-Host -Prompt "Temporary IP address"
@@ -206,9 +206,8 @@ $command | clip
 Write-Host '
 ########################
 
-  Paste in ssh 1/5
-## "'$command'"'
-Write-Host '## "password"'
+## Paste "'$command'"'
+Write-Host '## Type "password"' # ToDo: sudo for this session
 
 # Open ssh session to temporary IP of virtual machine with PuTTY with username:password
 cd "C:\Program Files\PuTTY"
@@ -223,8 +222,7 @@ $command | clip
 Write-Host '
 ########################
 
-  Paste in ssh 2/5
-## "'$command'"'
+## Paste "'$command'"'
 Write-Host "
 Wait time 15+min (  75% when done)"
 
@@ -237,8 +235,7 @@ $command | clip
 Write-Host '
 ########################
 
-  Paste in ssh 3/5
-## "'$command'"'
+## Paste "'$command'"'
 Write-Host "
 Wait time  5 min (  83% when done)"
 
@@ -251,8 +248,7 @@ $command | clip
 Write-Host '
 ########################
 
-##Paste in ssh 4/5
-## "'$command'"'
+## Paste "'$command'"'
 Write-Host "
 Wait time  1 min ( 85% when done)"
 
@@ -265,8 +261,7 @@ $command | clip
 Write-Host '
 ########################
 
-##Paste in ssh 5/5
-## "'$command'"'
+## Paste "'$command'"'
 
 Write-Host "
 Wait time 10 min (100% when done)
