@@ -28,6 +28,9 @@ $displayVHDsizeGB = $VirtualHardDriveSize / 1024 /1024 / 1024
 
 # Display VM parameters
 Write-Host "
+########################
+
+  create_templateVM
 
 ########################
 
@@ -73,75 +76,73 @@ Write-Host '
 
   Installation
   GNU GRUB
-#  <Install Ubuntu Server>
+#  Select <Install Ubuntu Server>
   Select a language
-#  <English>
+#  Select <English>
   Select your location
-## <Canada>
+## Select <Canada>
   Configure the keyboard
   Detect keyboard layout:
-#  <No>
+#  Select <No>
   Country of origin for the keyboard:
-## <French (Canada)>
+## Select <French (Canada)>
   Keyboard layout:
-#  <French (Canada)>
+#  Select <French (Canada)>
 
 Wait time  1 min (   3% when done)
 
   Hostname:
-#  "ubuntu"
+#  Type "ubuntu"
   Set up users and passwords
   Full name for the new user:
-#  ""
+#  Press Enter
   Username for your account:
-## "user"
+## Type "username"
   Choose a password for the new user:
-## "password"
+## Type "password"
   Re-enter password to verify:
-## "password"
+## Type "password"
   Encrypt your home directory?
-#  <No>
+#  Select <No>
   Configure the clock
   Is this time zone correct?
-## <No>
+## Select <No>
   Select your time zone:
-## <Eastern>
+## Select <Eastern>
   Partition disks
   Partitioning method:
-#  <Guided - use entire disk and set up LVM>
+#  Select <Guided - use entire disk and set up LVM>
   Select disk to partition:
-#  <SCSI1 (0,0,0) (sda) - 10.7 GB Msft Virtual Disk>
+#  Select <SCSI1 (0,0,0) (sda) - 10.7 GB Msft Virtual Disk>
   Write the changes to disks and configure LVM?
-## <Yes>
+## Select <Yes>
   Amount of volume group to use for guided partitioning:
-#  "9.7 GB"
+#  Press Enter
   Force UEFI installation?
-## <Yes>
+## Select <Yes>
   Finish partitioning and write changes to disk
   Write the changes to disks?
-## <Yes>
+## Select <Yes>
 
 Wait time  5 min (  11% when done)
 
   Configure the package manager
   HTTP proxy information (blank for none):
-#  ""
+#  Press Enter
 
 Wait time  1 min (  12% when done)
 
   Configure tasksel
   How do you want to manage upgrades on this system?
-## <Install security updates automatically>
+## Select <Install security updates automatically>
   Software selection
   Choose software to install:
-## <Samba file server> (select with spacebar)
-   <standard system utilities>
-## <openSSH server> (select with spacebar)
+## Select with spacebar <Samba file server> and <openSSH server>
 
 Wait time 25+min (  51% when done)
 
   Finish the installation
-#  <Continue>'
+#  Select <Continue>'
 
 # Connect to virtual machine video console
 vmconnect.exe localhost $VirtualMachineName
@@ -163,12 +164,12 @@ Write-Host '
 
 Wait time  1 min (  52% when done)
 
-  Login with localhost console (user:password)
-## "user"
-## "password"
+  Login with localhost console (username:password)
+## Type "username"
+## Type "password"
   Find IP address (192.168.1.???)
-## "ifconfig"
-##Type the IP address bellow'
+## Type "ifconfig"
+## Type the IP address bellow when found'
 
 # While virtual machine is not off
 while((Get-VM -Name $VirtualMachineName).State -ne "Off")
@@ -209,9 +210,9 @@ Write-Host '
 ## "'$command'"'
 Write-Host '## "password"'
 
-# Open ssh session to temporary IP of virtual machine with PuTTY with user:password
+# Open ssh session to temporary IP of virtual machine with PuTTY with username:password
 cd "C:\Program Files\PuTTY"
-.\putty.exe -ssh user@$tempIP -pw "password"
+.\putty.exe -ssh username@$tempIP -pw "password"
 
 # Wait for user to be ready to continue
 Pause
@@ -278,7 +279,7 @@ while((Get-VM $VirtualMachineName).State -ne "Off")
     sleep(1)
 }
 
-# Create a base snapshot
+# Create an official template snapshot
 Checkpoint-VM -VMName $VirtualMachineName -SnapshotName "template" > $null
 
 # Export virtual machine
