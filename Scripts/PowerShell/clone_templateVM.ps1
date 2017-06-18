@@ -28,7 +28,8 @@ $VirtualMachineGeneration = 2
 $VirtualMachineFolder = "$VirtualMachineLocation\$VirtualMachineName"
 $SnapshotFolder = $VirtualMachineFolder+"\Snapshots"
 $VHDFolder = $VirtualMachineFolder+"\Virtual Hard Disks"
-$templateConfig = "D:\frgnca\Documents\VMs\$templateVMName\Virtual Machines\0B08B36D-E8C3-40BC-AE21-D725EF10A3B1.vmcx" # ToDo: wildcard
+$templateFolder = "D:\frgnca\Documents\VMs"
+$templateConfig = (Get-Item "$templateFolder\$templateVMName\Virtual Machines\*.vmcx").FullName
 $bashFolder = "D:\frgnca\Documents\bash"
 $fileContent = Get-Content "$bashFolder\setupTemplate.sh.old"
 $bashProfile = "$bashFolder\.bash_profile"
@@ -155,18 +156,18 @@ $replace = "newIP=""$VirtualMachineIP"""
 $fileContent | ForEach-Object {$i++; if($_ -match $find){ $fileContent[$i] = $replace; $fileContent | Out-Unix -Path $setupTemplate } }
 
 # Copy setupTemplate.sh from localhost to virtual machine
-$toVM = "/home/user/"
+$toVM = "/home/username/"
 Copy-VMFile $VirtualMachineName -SourcePath $setupTemplate -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
 
 # Copy .bash_profile from localhost to virtual machine
 $scriptCall = "sudo ~/./setupTemplate.sh"
 $scriptCall | Out-Unix -Path $bashProfile
-$toVM = "/home/user/"
+$toVM = "/home/username/"
 Copy-VMFile $VirtualMachineName -SourcePath $bashProfile -DestinationPath $toVM -CreateFullPath -FileSource Host -Force
 
 # Open ssh session to template vm with PuTTY
 cd "C:\Program Files\PuTTY"
-.\putty.exe -ssh user@192.168.1.100 -pw "password"
+.\putty.exe -ssh username@192.168.1.100 -pw "password"
 
 # Display instructions
 Write-Host '########################
