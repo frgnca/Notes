@@ -200,7 +200,7 @@ while(-Not(Test-Connection $tempIP -Count 1 -Quiet))
 # ToDo: wget a script that does the following instead of pasting commands
 
 # Display instructions 1 of 5
-$command = "sudo ufw allow ssh > null && sudo ufw allow 137 > null && sudo ufw allow 138 > null && sudo ufw allow 139 > null && sudo ufw allow 445 > null && sudo ufw --force enable > null && sudo sed -i ""s#iface eth0 inet dhcp#iface eth0 inet static#"" /etc/network/interfaces > null && echo -e ""  address 192.168.1.100\n  netmask 255.255.255.0\n  gateway 192.168.1.1\n  dns-nameservers 8.8.8.8 8.8.4.4"" | sudo tee -a /etc/network/interfaces > null && echo -e ""[root]\n   comment = read only\n   path = /\n   browsable = yes\n   read only = yes\n   guest ok = yes"" | sudo tee -a /etc/samba/smb.conf > null"
+$command = "sudo ufw allow ssh > /dev/null 2>&1 && sudo ufw allow 137 > /dev/null 2>&1 && sudo ufw allow 138 > /dev/null 2>&1 && sudo ufw allow 139 > /dev/null 2>&1 && sudo ufw allow 445 > /dev/null 2>&1 && sudo ufw --force enable > /dev/null 2>&1 && sudo sed -i ""s#iface eth0 inet dhcp#iface eth0 inet static#"" /etc/network/interfaces > /dev/null 2>&1 && echo -e ""  address 192.168.1.100\n  netmask 255.255.255.0\n  gateway 192.168.1.1\n  dns-nameservers 8.8.8.8 8.8.4.4"" | sudo tee -a /etc/network/interfaces > /dev/null 2>&1 && echo -e ""[root]\n   comment = read only\n   path = /\n   browsable = yes\n   read only = yes\n   guest ok = yes"" | sudo tee -a /etc/samba/smb.conf > /dev/null 2>&1"
 $command | clip
 Write-Host '
 ########################
@@ -217,7 +217,7 @@ cd "C:\Program Files\PuTTY"
 Pause
 
 # Display instructions 2 of 5
-$command = "sudo apt-get update > null && sudo apt-get -y upgrade > null"
+$command = "sudo apt-get update > /dev/null 2>&1 && sudo apt-get -y upgrade > /dev/null 2>&1"
 $command | clip
 Write-Host '
 ########################
@@ -231,7 +231,7 @@ Wait time 15+min (  75% when done)"
 Pause
 
 # Display instructions 3 of 5
-$command = "sudo apt-get -y install --install-recommends linux-virtual-lts-xenial > null"
+$command = "sudo apt-get -y install --install-recommends linux-virtual-lts-xenial > /dev/null 2>&1"
 $command | clip
 Write-Host '
 ########################
@@ -245,7 +245,7 @@ Wait time  5 min (  83% when done)"
 Pause
 
 # Display instructions 4 of 5
-$command = "sudo apt-get -y install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial > null"
+$command = "sudo apt-get -y install --install-recommends linux-tools-virtual-lts-xenial linux-cloud-tools-virtual-lts-xenial > /dev/null 2>&1"
 $command | clip
 Write-Host '
 ########################
