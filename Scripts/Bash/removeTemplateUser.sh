@@ -7,12 +7,12 @@
 
 
 ################################################################################
-templateUser="user"
+templateUser="username"
 ########################
 # Remove template user
 userdel -r $templateUser
 
 # Remove script call from /etc/rc.local
 exit0="exit 0"
-scriptCall="/home/user/./removeTemplateUser.sh"
+scriptCall="/home/$templateUser/./removeTemplateUser.sh"
 sed -i "s#$scriptCall#$exit0#" /etc/rc.local
