@@ -13,7 +13,7 @@
 
 ################################################################################
 # Set new virtual machine parameters
-$VirtualMachineName = "test1"
+$VirtualMachineName = "test1" # ToDo: test if already exists
 $VirtualHardDriveSize = 10GB #[10GB+] # ToDo: auto resize in ubuntu
 $VirtualMachineMemory = 2GB #[2GB+]
 $VirtualSwitchName = "vSwitch"
@@ -28,8 +28,8 @@ $VirtualMachineGeneration = 2
 $VirtualMachineFolder = "$VirtualMachineLocation\$VirtualMachineName"
 $SnapshotFolder = $VirtualMachineFolder+"\Snapshots"
 $VHDFolder = $VirtualMachineFolder+"\Virtual Hard Disks"
-$templateConfig = "D:\media\!Documents\VMs\$templateVMName\Virtual Machines\0B08B36D-E8C3-40BC-AE21-D725EF10A3B1.vmcx" # ToDo: wildcard
-$bashFolder = "D:\media\!Documents\bash"
+$templateConfig = "D:\frgnca\Documents\VMs\$templateVMName\Virtual Machines\0B08B36D-E8C3-40BC-AE21-D725EF10A3B1.vmcx" # ToDo: wildcard
+$bashFolder = "D:\frgnca\Documents\bash"
 $fileContent = Get-Content "$bashFolder\setupTemplate.sh.old"
 $bashProfile = "$bashFolder\.bash_profile"
 $setupTemplate = "$bashFolder\setupTemplate.sh"
@@ -38,21 +38,24 @@ $displayVHDsizeGB = $VirtualHardDriveSize / 1024 /1024 / 1024
 
 # Display VM parameters
 Write-Host "
+########################
+
+  clone_templateVM
 
 ########################
 
-         Name: $VirtualMachineName
+ VM to create: $VirtualMachineName
           VHD:  $displayVHDsizeGB GB
           RAM:   $displayRAMsizeGB GB
            IP: $VirtualMachineIP
   StartAction: $startAction
-         User: $VirtualMachineUser  
-Only continue if the parameters are correct"
+         User: $VirtualMachineUser
+Only continue if the parameters are correct [CTRL+C to cancel]"
 
 # Chance to stop before proceeding
 Pause
 
-# Function to write unix style files by <https://picuspickings.blogspot.ca/2014/04/out-unix-function-to-output-unix-text_17.html>
+# Function to write unix style files <https://picuspickings.blogspot.ca/2014/04/out-unix-function-to-output-unix-text_17.html>
 function Out-Unix
 {
     param ([string] $Path)
@@ -168,9 +171,9 @@ cd "C:\Program Files\PuTTY"
 # Display instructions
 Write-Host '########################
 
-## "password"
-##Invent a new password
-##Retype your newly invented password
+## Type "password"
+## Type a newly invented password
+## Retype your newly invented password
 
 Wait time  1+min ( 99% when done)
 ssh session will close
@@ -205,7 +208,7 @@ while(-Not(Test-Connection $VirtualMachineIP -Count 1 -Quiet))
 
 # Wait 5 seconds after virtual machine starts responding to ping
 # ToDo: how to confirm ssh request won't be too soon?
-sleep(5)
+sleep(10)
 
 # Display instructions
 Write-Host "########################
