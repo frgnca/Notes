@@ -18,7 +18,7 @@ $VirtualMachineMemory = 2GB
 $VirtualSwitchName = "vSwitch"
 $VirtualMachineLocation = "D:\VMs"
 $InstallationMediaLocation = "D:\media\ubuntu-16.04.2-server-amd64.iso"
-$exportPath = "D:\media\!Documents\VMs"
+$exportPath = "D:\frgnca\Documents\VMs"
 ########################
 # Set internal variables
 $VirtualMachineGeneration = 2
