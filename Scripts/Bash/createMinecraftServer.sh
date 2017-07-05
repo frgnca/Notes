@@ -6,12 +6,13 @@
 # Shell script to create a Minecraft server daemon and a named pipe to send
 # commands to Minecraft's console, also open firewall port with ufw.
 
+
+# Requirements:   sudo apt-get -y install default-jre
+# Change mode:    sudo chmod +x ./createMinecraftServer.sh
 # Create:         sudo ./createMinecraftServer.sh
 # Shutdown:       sudo systemctl stop minecraft.__YOUR_SERVER_NAME__.service
 # Console input:  sudo bash -c 'echo __YOUR_COMMAND__ > ./__YOUR_SERVER_NAME__/fifo'
 # Console output: tail -n +1 -f ./__YOUR_SERVER_NAME__/logs/latest.log
-
-# Requirements: sudo apt-get -y install default-jre
 
 # ToDo: Find way to display console in real time instead of input/output
 # ToDo: Install default-jre package if not installed
