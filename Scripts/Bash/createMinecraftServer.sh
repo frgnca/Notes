@@ -21,13 +21,11 @@
 ################################################################################
 # Script properties
 serverName="server01" #="server01"
-serverPort="25565" #="25565"
-serverFile_toImport="server.properties" #="server.properties"
 minecraftVersion="1.12" #="1.12"
 allocatedRAM="1024M" #="1024M"
 templateFolderName="_template" #="_template"
 
-# Minecraft server properties if no server.properties file is imported
+# Minecraft server properties if $serverName.properties file does not exist in template folder
 max_tick_time="60000" #="60000"
 generator_settings="" #=""
 allow_nether="true" #="true"
@@ -48,7 +46,7 @@ max_players="20" #="20"
 network_compression_threshold="256" #="256"
 resource_pack_sha1="" #=""
 max_world_size="29999984" #="29999984"
-server_port=$serverPort #="25565"
+server_port="25565" #="25565"
 server_ip="" #=""
 spawn_npcs="true" #="true"
 allow_flight="false" #="false"
@@ -68,6 +66,7 @@ enable_rcon="false" #="false"
 # Internal variables
 installFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/
 templateFolder=$installFolder$templateFolderName/
+serverFile_toImport=$serverName".properties"
 serverpropertiesFile=$templateFolder$serverFile_toImport
 
 # ToDo: If default-jre is not installed, install it #dpkg -l default-jre
