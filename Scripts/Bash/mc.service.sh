@@ -92,16 +92,22 @@ then
 	exit 1
 fi
 
-# If first argument is "create" AND second argument is a server name that already exists in installFolder
-if ([ $1 == "create" ] && [ -d $installFolder$2 ])
+# If first argument is "create"
+if ([ $1 == "create" ])
 then
-	# First argument is "create" AND second argument is a server name that already exists in installFolder
+	# First argument is "create"
 	
-	# Display error message
-	echo "ERROR serverName $2 already in use by $installFolder$2/, cannot create"
+	# If second argument is a server name that already exists in installFolder
+	if ([ -d $installFolder$2 ])
+	then
+		# Second argument is a server name that already exists in installFolder
+	
+		# Display error message
+		echo "ERROR serverName $2 already in use by $installFolder$2/, cannot create"
 
-	# Exit with error
-	exit 1
+		# Exit with error
+		exit 1
+	fi	
 fi
 
 # If first argument is "delete" AND second argument is a server name that does not already exists in installFolder
