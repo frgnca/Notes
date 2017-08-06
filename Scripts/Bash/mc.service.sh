@@ -2,14 +2,14 @@
 # Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
 # GNU Affero General Public License v3.0
 
-# createMinecraftServer.sh
+# mc.service.sh
 # Shell script to create a Minecraft server daemon and a named pipe to send
 # commands to Minecraft's console, also open firewall port with ufw.
 
 
 # Requirements:   sudo apt-get -y install default-jre
-# Change mode:    sudo chmod +x ./createMinecraftServer.sh
-# Create:         sudo ./createMinecraftServer.sh
+# Change mode:    sudo chmod +x ./mc.service.sh
+# Create:         sudo ./mc.service.sh
 # Shutdown:       sudo systemctl stop minecraft.__YOUR_SERVER_NAME__.service
 # Console input:  sudo bash -c 'echo __YOUR_COMMAND__ > ./__YOUR_SERVER_NAME__/fifo'
 # Console output: tail -n +1 -f ./__YOUR_SERVER_NAME__/logs/latest.log
@@ -152,7 +152,7 @@ done
 echo ""
 echo "########################"
 echo ""
-echo "  createMinecraftServer"
+echo "  mc.service"
 echo ""
 echo "########################"
 echo ""
