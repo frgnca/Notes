@@ -378,6 +378,15 @@ then
 	# Set server name
 	serverName=$2
 
+	# Internal variables
+	serverpropertiesFile=$installFolder$2/$serverName".properties"
+
+	# Get the value of server-port from file
+	server_port=$(grep -n "server-port=" $serverpropertiesFile)
+
+	# Give to server_port the value from file
+	server_port=${server_port:15}
+
 	# Display instructions
 	echo ""
 	echo "########################"
@@ -387,7 +396,7 @@ then
 	echo "########################"
 	echo ""
 	echo "         serverName: "$serverName
-	echo "         serverPort: *ToDo" #$server_port
+	echo "         serverPort: "$server_port
 	echo "   minecraftVersion: *ToDo" #$minecraftVersion
 	echo "       allocatedRAM: *ToDo" #$allocatedRAM
 	echo "      installFolder: "$installFolder
@@ -449,6 +458,9 @@ then
 
 	# Remove server folder
 	rm -r $installFolder$serverName/
+
+	# Remove exception to firewall
+	ufw delete allow $server_port > /dev/null 2>&1
 
 	# Display instructions
 	echo ""
