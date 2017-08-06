@@ -187,7 +187,7 @@ then
 	echo ""
 	echo "########################"
 	echo ""
-	echo "  mc.service"
+	echo "  mc.service create"
 	echo ""
 	echo "########################"
 	echo ""
