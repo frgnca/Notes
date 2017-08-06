@@ -166,22 +166,22 @@ echo "     propertiesFile: "$serverpropertiesFileDisplay
 echo "        worldFolder: "$worldFolderDisplay
 echo ""
 
-# If the script recieved the "-y" argument
-if [ ""$1"" == "-y" ]
-then
-	# The script did recieve the "-y" argument
-	
-	# Give to keypress the value "-y"
-	keypress=$1
-	
-	# Display instructions
-	echo "  Continue? [Y/n]-y"
-else
-	# The script did not recieve the "-y" argument
-	
+## If the script recieved the "-y" argument
+#if [ ""$1"" == "-y" ]
+#then
+#	# The script did recieve the "-y" argument
+#	
+#	# Give to keypress the value "-y"
+#	keypress=$1
+#	
+#	# Display instructions
+#	echo "  Continue? [Y/n]-y"
+#else
+#	# The script did not recieve the "-y" argument
+#	
 	# Wait for keypress from user
 	read -n1 -r -p "  Continue? [Y/n]" keypress
-fi
+#fi
 
 # If keypress was not either one of the Y, or y, or Enter key, or the flag -y
 if !([ "$keypress" == "Y" ] || [ "$keypress" == "y" ] || [ "$keypress" == "" ] || [ "$keypress" == "-y" ])
