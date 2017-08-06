@@ -101,6 +101,16 @@ then
 	exit 1
 fi
 
+# If the first argument is "delete" AND the second argument is a server name that does not already exists in installFolder
+if ([ $1 == "delete" ] && ![ -d $installFolder$2 ])
+then
+	# Display error message
+	echo "ERROR serverName $2 does not exists in $installFolder, cannot delete"
+
+	# Exit with error
+	exit 1
+fi
+
 #If minecraft server using the same name already exist
 if ([ -d $installFolder$serverName ])
 then
