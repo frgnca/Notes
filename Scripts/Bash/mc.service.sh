@@ -108,7 +108,7 @@ then
 fi
 
 # If first argument is "delete" AND second argument is a server name that does not already exists in installFolder
-if ([ $1 == "delete" ] && ![ -d $installFolder$2 ])
+if ([ $1 == "delete" ] && ! [ -d $installFolder$2 ])
 then
 	# First argument is "delete" AND second argument is a server name that does not already exists in installFolder
 
