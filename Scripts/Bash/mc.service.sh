@@ -109,8 +109,10 @@ then
 		exit 1
 	fi
 
-	# Internal variables
+	# Set server name
 	serverName=$2
+
+	# Internal variables
 	serverFile_toImport=$serverName".properties"
 	serverpropertiesFile=$templateFolder$serverFile_toImport
 
