@@ -75,7 +75,17 @@ serverpropertiesFile=$templateFolder$serverFile_toImport
 if ([ $# != 2 ])
 then
 	# Display error message
-	echo "ERROR number of arguments received needs to be 2, not "$#
+	echo "ERROR number of arguments received must be 2, not "$#
+
+	# Exit with error
+	exit 1
+fi
+
+# If first argument is neither "create" nor "delete"
+if ([ $1 != "create" || $1 != "delete" ])
+then
+	# Display error message
+	echo "ERROR first argument must be either """create""" or """delete""""
 
 	# Exit with error
 	exit 1
