@@ -84,7 +84,7 @@ then
 fi
 
 # If first argument is neither "create" nor "delete"
-if ([ $1 != "create" || $1 != "delete" ])
+if ([ $1 != "create" ] || [ $1 != "delete" ])
 then
 	# First argument is neither "create" nor "delete"
 	
