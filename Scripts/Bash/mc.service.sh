@@ -374,4 +374,87 @@ then
 		# Exit with error
 		exit 1
 	fi
+
+	# Set server name
+	serverName=$2
+
+	# Display instructions
+	echo ""
+	echo "########################"
+	echo ""
+	echo "  mc.service delete"
+	echo ""
+	echo "########################"
+	echo ""
+	echo "         serverName: "$serverName
+	echo "         serverPort: *ToDo" #$server_port
+	echo "   minecraftVersion: *ToDo" #$minecraftVersion
+	echo "       allocatedRAM: *ToDo" #$allocatedRAM
+	echo "      installFolder: "$installFolder
+	echo ""
+
+	## If the script recieved the "-y" argument
+	#if [ ""$1"" == "-y" ]
+	#then
+	#	# The script did recieve the "-y" argument
+	#	
+	#	# Give to keypress the value "-y"
+	#	keypress=$1
+	#	
+	#	# Display instructions
+	#	echo "  Continue? [Y/n]-y"
+	#else
+	#	# The script did not recieve the "-y" argument
+	#	
+		# Wait for keypress from user
+		read -n1 -r -p "  Continue? [Y/n]" keypress
+	#fi
+
+	# If keypress was not either one of the Y, or y, or Enter key, or the flag -y
+	if !([ "$keypress" == "Y" ] || [ "$keypress" == "y" ] || [ "$keypress" == "" ] || [ "$keypress" == "-y" ])
+	then
+		# Keypress was not either one of the Y, or y, or Enter key
+	
+		# If keypress was not Enter key
+		if !([ "$keypress" == "" ])
+		then
+			# Add new line
+			echo ""
+		fi
+	
+		# End script
+		exit 0
+	fi
+
+	# If keypress was either the Y, or y key
+	if ([ "$keypress" == "Y" ] || [ "$keypress" == "y" ])
+	then
+		# Add new line
+		echo ""
+	fi
+	keypress=/dev/null
+
+	# Display instructions
+	echo ""
+	echo "  Wait time  1min (100% when done)"
+
+	# Stop daemon
+	systemctl stop minecraft.$serverName.service
+
+	# Disable daemon
+	systemctl disable minecraft.$serverName.service
+
+	# Remove systemd unit file
+	rm /etc/systemd/system/minecraft.$serverName.service
+
+	# Remove server folder
+	rm -r $installFolder$serverName/
+
+	# Display instructions
+	echo ""
+	echo "########################"
+	echo ""
+	echo "  Done"
+	echo ""
+	echo "########################"
 fi
