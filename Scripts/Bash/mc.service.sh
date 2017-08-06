@@ -113,8 +113,7 @@ then
 	serverName=$2
 
 	# Internal variables
-	serverFile_toImport=$serverName".properties"
-	serverpropertiesFile=$templateFolder$serverFile_toImport
+	serverpropertiesFile=$templateFolder$serverName".properties"
 
 	# If there is a server.properties file to import
 	if [ -f $serverpropertiesFile ]
