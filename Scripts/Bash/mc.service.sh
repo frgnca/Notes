@@ -91,6 +91,16 @@ then
 	exit 1
 fi
 
+# If the first argument is "create" AND the second argument is a server name that already exists in installFolder
+if ([ $1 == "create" && -d $installFolder$2 ])
+then
+	# Display error message
+	echo "ERROR serverName $2 already in use by $installFolder$serverName/"
+
+	# Exit with error
+	exit 1
+fi
+
 #If minecraft server using the same name already exist
 if ([ -d $installFolder$serverName ])
 then
