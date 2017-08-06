@@ -119,16 +119,6 @@ then
 	exit 1
 fi
 
-#If minecraft server using the same name already exist
-if ([ -d $installFolder$serverName ])
-then
-    # Display error message
-	echo "ERROR serverName $serverName already in use by $installFolder$serverName/"
-	
-	# Exit with error
-	exit 1
-fi
-
 # If there is a server.properties file to import
 if [ -f $serverpropertiesFile ]
 then
