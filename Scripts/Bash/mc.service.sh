@@ -74,6 +74,8 @@ serverpropertiesFile=$templateFolder$serverFile_toImport
 # If number of arguments recieved is not 2
 if ([ $# != 2 ])
 then
+	# Number of arguments recieved is not 2
+	
 	# Display error message
 	echo "ERROR number of arguments received must be 2, not "$#
 
@@ -84,6 +86,8 @@ fi
 # If first argument is neither "create" nor "delete"
 if ([ $1 != "create" || $1 != "delete" ])
 then
+	# First argument is neither "create" nor "delete"
+	
 	# Display error message
 	echo "ERROR first argument must be either """create""" or """delete""""
 
@@ -91,9 +95,11 @@ then
 	exit 1
 fi
 
-# If the first argument is "create" AND the second argument is a server name that already exists in installFolder
+# If first argument is "create" AND second argument is a server name that already exists in installFolder
 if ([ $1 == "create" ] && [ -d $installFolder$2 ])
 then
+	# First argument is "create" AND second argument is a server name that already exists in installFolder
+	
 	# Display error message
 	echo "ERROR serverName $2 already in use by $installFolder$2/, cannot create"
 
@@ -101,9 +107,11 @@ then
 	exit 1
 fi
 
-# If the first argument is "delete" AND the second argument is a server name that does not already exists in installFolder
+# If first argument is "delete" AND second argument is a server name that does not already exists in installFolder
 if ([ $1 == "delete" ] && ![ -d $installFolder$2 ])
 then
+	# First argument is "delete" AND second argument is a server name that does not already exists in installFolder
+
 	# Display error message
 	echo "ERROR serverName $2 does not exists in $installFolder, cannot delete"
 
