@@ -379,7 +379,7 @@ then
 	serverName=$2
 
 	# Internal variables
-	serverpropertiesFile=$installFolder$2"server.properties"
+	serverpropertiesFile=$installFolder$2"/server.properties"
 
 	# Get the value of server-port from file
 	server_port=$(grep -n "server-port=" $serverpropertiesFile)
