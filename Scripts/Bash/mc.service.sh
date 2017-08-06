@@ -442,7 +442,7 @@ then
 	systemctl stop minecraft.$serverName.service
 
 	# Disable daemon
-	systemctl disable minecraft.$serverName.service
+	systemctl disable minecraft.$serverName.service > /dev/null 2>&1
 
 	# Remove systemd unit file
 	rm /etc/systemd/system/minecraft.$serverName.service
