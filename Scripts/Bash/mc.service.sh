@@ -110,16 +110,22 @@ then
 	fi	
 fi
 
-# If first argument is "delete" AND second argument is a server name that does not already exists in installFolder
-if ([ $1 == "delete" ] && ! [ -d $installFolder$2 ])
+# If first argument is "delete"
+if ([ $1 == "delete" ])
 then
-	# First argument is "delete" AND second argument is a server name that does not already exists in installFolder
+	# First argument is "delete"
 
-	# Display error message
-	echo "ERROR serverName $2 does not exists in $installFolder, cannot delete"
+	# If second argument is a server name that does not already exists in installFolder
+	if (! [ -d $installFolder$2 ])
+	then
+		# Second argument is a server name that does not already exists in installFolder
+		
+		# Display error message
+		echo "ERROR serverName $2 does not exists in $installFolder, cannot delete"
 
-	# Exit with error
-	exit 1
+		# Exit with error
+		exit 1
+	fi
 fi
 
 # Internal variables
