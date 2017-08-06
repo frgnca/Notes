@@ -71,6 +71,16 @@ serverpropertiesFile=$templateFolder$serverFile_toImport
 
 # ToDo: If default-jre is not installed, install it #dpkg -l default-jre
 
+# If number of arguments recieved is not 2
+if ([ $# != 2 ])
+then
+	# Display error message
+	echo "ERROR number of arguments received needs to be 2, not "$#
+
+	# Exit with error
+	exit 1
+fi
+
 #If minecraft server using the same name already exist
 if ([ -d $installFolder$serverName ])
 then
