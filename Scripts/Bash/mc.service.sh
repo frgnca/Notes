@@ -20,7 +20,6 @@
 
 ################################################################################
 # Script properties
-serverName="server01" #="server01"
 minecraftVersion="1.12" #="1.12"
 allocatedRAM="1024M" #="1024M"
 templateFolderName="_template" #="_template"
@@ -66,8 +65,6 @@ enable_rcon="false" #="false"
 # Internal variables
 installFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/
 templateFolder=$installFolder$templateFolderName/
-serverFile_toImport=$serverName".properties"
-serverpropertiesFile=$templateFolder$serverFile_toImport
 
 # ToDo: If default-jre is not installed, install it #dpkg -l default-jre
 
@@ -118,6 +115,11 @@ then
 	# Exit with error
 	exit 1
 fi
+
+# Internal variables
+serverName=$2
+serverFile_toImport=$serverName".properties"
+serverpropertiesFile=$templateFolder$serverFile_toImport
 
 # If there is a server.properties file to import
 if [ -f $serverpropertiesFile ]
