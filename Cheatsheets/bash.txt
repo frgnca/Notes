@@ -1,0 +1,10 @@
+
+  Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+  GNU Affero General Public License v3.0
+
+  bash.txt
+  Bash cheatsheet
+
+################################################################################
+# os_update
+sudo /bin/bash -c 'apt-get update && apt-get -y upgrade && apt-get -y autoremove'
