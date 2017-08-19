@@ -1,0 +1,36 @@
+
+  Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+  GNU Affero General Public License v3.0
+
+  WindowsCMDFr.txt
+  Liste des caractères spécifiques au Français et de leur équivalence
+  respective en ligne de commande pour l'exécution de script .cmd
+
+  Ex: echo "âêîôù …ˆŒ“—"
+
+################################################################################
+Fr  cmd
+########################
+À   ·
+à   …
+Â   ¶
+â   ƒ
+É   introuvable
+é   ‚
+È   Ô
+è   Š
+Ê   Ò
+ê   ˆ
+Î   ×
+î   Œ
+Ï   Ø
+ï   ‹
+Ô   â
+ô   “
+Ö   ™
+ö   ”
+Ù   ë
+ù   —
+Ç   €
+ç   ‡
+œ   introuvable
