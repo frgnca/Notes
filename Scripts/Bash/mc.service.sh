@@ -62,8 +62,9 @@ motd="A Minecraft Server" #="A Minecraft Server"
 enable_rcon="false" #="false"
 ########################
 # Internal variables
-installFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/
-templateFolder=$installFolder"templates/"
+currentFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/
+templateFolder=$currentFolder"templates/"
+serverFolder=$currentFolder"servers/"
 
 # ToDo: If default-jre is not installed, install it #dpkg -l default-jre
 
@@ -97,12 +98,12 @@ then
 	# First argument is "create"
 	
 	# If second argument is a server name that already exists in installFolder
-	if ([ -d $installFolder$2 ])
+	if ([ -d $serverFolder$2 ])
 	then
 		# Second argument is a server name that already exists in installFolder
 	
 		# Display error message
-		echo "ERROR serverName $2 already in use by $installFolder$2/, cannot create"
+		echo "ERROR serverName $2 already in use by $serverFolder$2/, cannot create"
 
 		# Exit with error
 		exit 1
@@ -151,7 +152,7 @@ then
 	fi
 
 	# Get a list of all the sub folders*
-	declare -a serverFolders=$(find $installFolder -maxdepth 1 -type d)
+	declare -a serverFolders=$(find $serverFolder -maxdepth 1 -type d)
 
 	# For each subfolder*
 	for i in $serverFolders
@@ -193,7 +194,7 @@ then
 	echo "         serverPort: "$server_port
 	echo "   minecraftVersion: "$minecraftVersion
 	echo "       allocatedRAM: "$allocatedRAM
-	echo "      installFolder: "$installFolder
+	echo "       serverFolder: "$serverFolder
 	echo "     templateFolder: "$templateFolder
 	echo "     propertiesFile: "$serverpropertiesFileDisplay
 	echo "        worldFolder: "$worldFolderDisplay
@@ -252,10 +253,10 @@ then
 	fi
 
 	# Create server folder
-	mkdir $installFolder$serverName #> /dev/null 2>&1
+	mkdir $serverFolder$serverName #> /dev/null 2>&1
 
 	# Copy minecraft_server.jar in server folder
-	cp $templateFolder"minecraft_server.$minecraftVersion.jar" $installFolder$serverName"/minecraft_server.jar"
+	cp $templateFolder"minecraft_server.$minecraftVersion.jar" $serverFolder$serverName"/minecraft_server.jar"
 
 	# If there is a server.properties file to import
 	if [ -f $serverpropertiesFile ]
@@ -263,7 +264,7 @@ then
 		# There is a server.properties file to import
 	
 		# Copy server.properties in server folder
-		cp $serverpropertiesFile $installFolder$serverName"/server.properties"
+		cp $serverpropertiesFile $serverFolder$serverName"/server.properties"
 	
 		# If there is a world folder to import
 		if ([ -d $worldFolder ])
@@ -271,57 +272,57 @@ then
 			# There is a world folder to import
 		
 			# Copy world folder from template folder to server folder
-			cp -r $worldFolder $installFolder$serverName/$level_name/
+			cp -r $worldFolder $serverFolder$serverName/$level_name/
 		fi
 	else
 		# There is no server.properties file to import
 	
 		# Create server.properties in server folder using provided minecraft server properties
-		echo "#Minecraft server properties" > $installFolder$serverName"/server.properties"
-		echo "#(File Modification Datestamp)" >> $installFolder$serverName"/server.properties"
-		echo "max-tick-time="$max_tick_time >> $installFolder$serverName"/server.properties"
-		echo "generator-settings="$generator_settings >> $installFolder$serverName"/server.properties"
-		echo "allow-nether="$allow_nether >> $installFolder$serverName"/server.properties"
-		echo "force-gamemode="$force_gamemode >> $installFolder$serverName"/server.properties"
-		echo "gamemode="$gamemode >> $installFolder$serverName"/server.properties"
-		echo "enable-query="$enable_query >> $installFolder$serverName"/server.properties"
-		echo "player-idle-timeout="$player_idle_timeout >> $installFolder$serverName"/server.properties"
-		echo "difficulty="$difficulty >> $installFolder$serverName"/server.properties"
-		echo "spawn-monsters="$spawn_monsters >> $installFolder$serverName"/server.properties"
-		echo "op-permission-level="$op_permission_level >> $installFolder$serverName"/server.properties"
-		echo "announce-player-achievements="$announce_player_achievements >> $installFolder$serverName"/server.properties"
-		echo "pvp="$pvp >> $installFolder$serverName"/server.properties"
-		echo "snooper-enabled="$snooper_enabled >> $installFolder$serverName"/server.properties"
-		echo "level-type="$level_type >> $installFolder$serverName"/server.properties"
-		echo "hardcore="$hardcore >> $installFolder$serverName"/server.properties"
-		echo "enable-command-block="$enable_command_block >> $installFolder$serverName"/server.properties"
-		echo "max-players="$max_players >> $installFolder$serverName"/server.properties"
-		echo "network-compression-threshold="$network_compression_threshold >> $installFolder$serverName"/server.properties"
-		echo "resource-pack-sha1="$resource_pack_sha1 >> $installFolder$serverName"/server.properties"
-		echo "max-world-size="$max_world_size >> $installFolder$serverName"/server.properties"
-		echo "server-port="$server_port >> $installFolder$serverName"/server.properties"
-		echo "server-ip="$server_ip >> $installFolder$serverName"/server.properties"
-		echo "spawn-npcs="$spawn_npcs >> $installFolder$serverName"/server.properties"
-		echo "allow-flight="$allow_flight >> $installFolder$serverName"/server.properties"
-		echo "level-name="$level_name >> $installFolder$serverName"/server.properties"
-		echo "view-distance="$view_distance >> $installFolder$serverName"/server.properties"
-		echo "resource-pack="$resource_pack >> $installFolder$serverName"/server.properties"
-		echo "spawn-animals="$spawn_animals >> $installFolder$serverName"/server.properties"
-		echo "white-list="$white_list >> $installFolder$serverName"/server.properties"
-		echo "generate-structures="$generate_structures >> $installFolder$serverName"/server.properties"
-		echo "online-mode="$online_mode >> $installFolder$serverName"/server.properties"
-		echo "max-build-height="$max_build_height >> $installFolder$serverName"/server.properties"
-		echo "level-seed="$level_seed >> $installFolder$serverName"/server.properties"
-		echo "prevent-proxy-connections="$prevent_proxy_connections >> $installFolder$serverName"/server.properties"
-		echo "motd="$motd >> $installFolder$serverName"/server.properties"
-		echo "enable-rcon="$enable_rcon >> $installFolder$serverName"/server.properties"
+		echo "#Minecraft server properties" > $serverFolder$serverName"/server.properties"
+		echo "#(File Modification Datestamp)" >> $serverFolder$serverName"/server.properties"
+		echo "max-tick-time="$max_tick_time >> $serverFolder$serverName"/server.properties"
+		echo "generator-settings="$generator_settings >> $serverFolder$serverName"/server.properties"
+		echo "allow-nether="$allow_nether >> $serverFolder$serverName"/server.properties"
+		echo "force-gamemode="$force_gamemode >> $serverFolder$serverName"/server.properties"
+		echo "gamemode="$gamemode >> $serverFolder$serverName"/server.properties"
+		echo "enable-query="$enable_query >> $serverFolder$serverName"/server.properties"
+		echo "player-idle-timeout="$player_idle_timeout >> $serverFolder$serverName"/server.properties"
+		echo "difficulty="$difficulty >> $serverFolder$serverName"/server.properties"
+		echo "spawn-monsters="$spawn_monsters >> $serverFolder$serverName"/server.properties"
+		echo "op-permission-level="$op_permission_level >> $serverFolder$serverName"/server.properties"
+		echo "announce-player-achievements="$announce_player_achievements >> $serverFolder$serverName"/server.properties"
+		echo "pvp="$pvp >> $serverFolder$serverName"/server.properties"
+		echo "snooper-enabled="$snooper_enabled >> $serverFolder$serverName"/server.properties"
+		echo "level-type="$level_type >> $serverFolder$serverName"/server.properties"
+		echo "hardcore="$hardcore >> $serverFolder$serverName"/server.properties"
+		echo "enable-command-block="$enable_command_block >> $serverFolder$serverName"/server.properties"
+		echo "max-players="$max_players >> $serverFolder$serverName"/server.properties"
+		echo "network-compression-threshold="$network_compression_threshold >> $serverFolder$serverName"/server.properties"
+		echo "resource-pack-sha1="$resource_pack_sha1 >> $serverFolder$serverName"/server.properties"
+		echo "max-world-size="$max_world_size >> $serverFolder$serverName"/server.properties"
+		echo "server-port="$server_port >> $serverFolder$serverName"/server.properties"
+		echo "server-ip="$server_ip >> $serverFolder$serverName"/server.properties"
+		echo "spawn-npcs="$spawn_npcs >> $serverFolder$serverName"/server.properties"
+		echo "allow-flight="$allow_flight >> $serverFolder$serverName"/server.properties"
+		echo "level-name="$level_name >> $serverFolder$serverName"/server.properties"
+		echo "view-distance="$view_distance >> $serverFolder$serverName"/server.properties"
+		echo "resource-pack="$resource_pack >> $serverFolder$serverName"/server.properties"
+		echo "spawn-animals="$spawn_animals >> $serverFolder$serverName"/server.properties"
+		echo "white-list="$white_list >> $serverFolder$serverName"/server.properties"
+		echo "generate-structures="$generate_structures >> $serverFolder$serverName"/server.properties"
+		echo "online-mode="$online_mode >> $serverFolder$serverName"/server.properties"
+		echo "max-build-height="$max_build_height >> $serverFolder$serverName"/server.properties"
+		echo "level-seed="$level_seed >> $serverFolder$serverName"/server.properties"
+		echo "prevent-proxy-connections="$prevent_proxy_connections >> $serverFolder$serverName"/server.properties"
+		echo "motd="$motd >> $serverFolder$serverName"/server.properties"
+		echo "enable-rcon="$enable_rcon >> $serverFolder$serverName"/server.properties"
 	fi
 
 	# Create eula.txt in server folder to accept eula so server can initialize
-	echo "eula=true" > $installFolder$serverName/eula.txt
+	echo "eula=true" > $serverFolder$serverName/eula.txt
 
 	# Create named pipe in server folder to send commands to minecraft server process
-	mkfifo $installFolder$serverName/fifo
+	mkfifo $serverFolder$serverName/fifo
 
 	# Add exception to firewall to open server to Internet
 	ufw allow $server_port > /dev/null 2>&1
@@ -332,9 +333,9 @@ then
 	echo "After=network.target" >> /etc/systemd/system/minecraft.$serverName.service
 	echo "" >> /etc/systemd/system/minecraft.$serverName.service
 	echo "[Service]" >> /etc/systemd/system/minecraft.$serverName.service
-	echo "WorkingDirectory=$installFolder$serverName" >> /etc/systemd/system/minecraft.$serverName.service
-	echo "ExecStart=/bin/bash -c 'tail -n +1 -f $installFolder$serverName/fifo | /usr/bin/java -Xms$allocatedRAM -Xmx$allocatedRAM -jar $installFolder$serverName/minecraft_server.jar nogui'" >> /etc/systemd/system/minecraft.$serverName.service
-	echo "ExecStop=/bin/bash -c 'echo stop > $installFolder$serverName/fifo'" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "WorkingDirectory=$serverFolder$serverName" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "ExecStart=/bin/bash -c 'tail -n +1 -f $serverFolder$serverName/fifo | /usr/bin/java -Xms$allocatedRAM -Xmx$allocatedRAM -jar $serverFolder$serverName/minecraft_server.jar nogui'" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "ExecStop=/bin/bash -c 'echo stop > $serverFolder$serverName/fifo'" >> /etc/systemd/system/minecraft.$serverName.service
 	echo "Restart=always" >> /etc/systemd/system/minecraft.$serverName.service
 	echo "" >> /etc/systemd/system/minecraft.$serverName.service
 	echo "[Install]" >> /etc/systemd/system/minecraft.$serverName.service
@@ -362,12 +363,12 @@ then
 	# First argument is "delete"
 
 	# If second argument is a server name that does not already exists in installFolder
-	if (! [ -d $installFolder$2 ])
+	if (! [ -d $serverFolder$2 ])
 	then
 		# Second argument is a server name that does not already exists in installFolder
 		
 		# Display error message
-		echo "ERROR serverName $2 does not exists in $installFolder, cannot delete"
+		echo "ERROR serverName $2 does not exists in $serverFolder, cannot delete"
 
 		# Exit with error
 		exit 1
@@ -377,7 +378,7 @@ then
 	serverName=$2
 
 	# Internal variables
-	serverpropertiesFile=$installFolder$2"/server.properties"
+	serverpropertiesFile=$serverFolder$2"/server.properties"
 
 	# Get the value of server-port from file
 	server_port=$(grep -n "server-port=" $serverpropertiesFile)
@@ -397,7 +398,7 @@ then
 	echo "         serverPort: "$server_port
 	echo "   minecraftVersion: *ToDo" #$minecraftVersion
 	echo "       allocatedRAM: *ToDo" #$allocatedRAM
-	echo "      installFolder: "$installFolder
+	echo "      installFolder: "$serverFolder
 	echo ""
 
 	## If the script recieved the "-y" argument
@@ -455,7 +456,7 @@ then
 	rm /etc/systemd/system/minecraft.$serverName.service
 
 	# Remove server folder
-	rm -r $installFolder$serverName/
+	rm -r $serverFolder$serverName/
 
 	# Remove exception to firewall
 	ufw delete allow $server_port > /dev/null 2>&1
