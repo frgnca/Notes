@@ -20,7 +20,7 @@
 
 ################################################################################
 # Script properties
-minecraftVersion="1.12" #="1.12"
+minecraftVersion="1.12.1" #="1.12.1"
 allocatedRAM="1024M" #="1024M"
 templateFolderName="_template" #="_template"
 
@@ -45,7 +45,7 @@ max_players="20" #="20"
 network_compression_threshold="256" #="256"
 resource_pack_sha1="" #=""
 max_world_size="29999984" #="29999984"
-server_port="25565" #="25565"
+server_port="25566" #="25565"
 server_ip="" #=""
 spawn_npcs="true" #="true"
 allow_flight="false" #="false"
@@ -123,12 +123,6 @@ then
 		# Make information to display equal to the server.properties file path
 		serverpropertiesFileDisplay=$serverpropertiesFile
 	
-		# Get the value of server-port from file
-		server_port=$(grep -n "server-port=" $serverpropertiesFile)
-
-		# Give to server_port the value from file
-		server_port=${server_port:15}
-	
 		# Get the value of level-name from file
 		level_name=$(grep -n "level-name=" $serverpropertiesFile)
 
@@ -167,19 +161,25 @@ then
 		if [ "$i/" != "$templateFolder" ]
 		then
 			# Not the first result of the array
-		
-			# If server_port is found in server.properties file of current sub folder
-			if (grep -Fxq "server-port=$server_port" $i"/server.properties" > /dev/null 2>&1)
-			then
-				# server_port was found in current file
 			
-				# Display error message
-				echo "ERROR serverPort $server_port already in use by $i/"
+			# Get server port from server properties file
+			inUse_serverPort=$(grep "server-port=" $i"/server.properties")
 			
-				# Exit with error
-				exit 1
-			fi
+			# Only keep port number and add a space at the end
+			inUse_serverPort=${inUse_serverPort:12:6}" "
+
+			# Add server port to port string (ex: "25566 25567 25569 ")
+			portString+=$inUse_serverPort
 		fi
+	done
+
+	# While server port is in use by one of the current servers
+	while ( echo $portString | grep $server_port > /dev/null 2>&1 )
+	do
+		# Server port is in use by one of the current servers
+
+		# Increment server port
+		server_port=$(($server_port + 1))
 	done
 
 	# Display instructions
