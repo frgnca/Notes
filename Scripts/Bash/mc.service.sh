@@ -22,7 +22,6 @@
 # Script properties
 minecraftVersion="1.12.1" #="1.12.1"
 allocatedRAM="1024M" #="1024M"
-templateFolderName="_template" #="_template"
 
 # Minecraft server properties if $serverName.properties file does not exist in template folder
 max_tick_time="60000" #="60000"
@@ -64,7 +63,7 @@ enable_rcon="false" #="false"
 ########################
 # Internal variables
 installFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/
-templateFolder=$installFolder$templateFolderName/
+templateFolder=$installFolder"templates/"
 
 # ToDo: If default-jre is not installed, install it #dpkg -l default-jre
 
