@@ -97,10 +97,10 @@ if ([ $1 == "create" ])
 then
 	# First argument is "create"
 	
-	# If second argument is a server name that already exists in installFolder
+	# If second argument is a server name that already exists in serverFolder
 	if ([ -d $serverFolder$2 ])
 	then
-		# Second argument is a server name that already exists in installFolder
+		# Second argument is a server name that already exists in serverFolder
 	
 		# Display error message
 		echo "ERROR serverName $2 already in use by $serverFolder$2/, cannot create"
@@ -362,10 +362,10 @@ if ([ $1 == "delete" ])
 then
 	# First argument is "delete"
 
-	# If second argument is a server name that does not already exists in installFolder
+	# If second argument is a server name that does not already exists in serverFolder
 	if (! [ -d $serverFolder$2 ])
 	then
-		# Second argument is a server name that does not already exists in installFolder
+		# Second argument is a server name that does not already exists in serverFolder
 		
 		# Display error message
 		echo "ERROR serverName $2 does not exists in $serverFolder, cannot delete"
@@ -398,7 +398,7 @@ then
 	echo "         serverPort: "$server_port
 	echo "   minecraftVersion: *ToDo" #$minecraftVersion
 	echo "       allocatedRAM: *ToDo" #$allocatedRAM
-	echo "      installFolder: "$serverFolder
+	echo "       serverFolder: "$serverFolder
 	echo ""
 
 	## If the script recieved the "-y" argument
