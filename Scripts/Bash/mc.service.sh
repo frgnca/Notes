@@ -80,13 +80,13 @@ then
 	exit 1
 fi
 
-# If first argument is neither "create" nor "delete"
-if ([ $1 != "create" ] && [ $1 != "delete" ])
+# If first argument is neither "create", nor "delete", nor "adventure"
+if ([ $1 != "create" ] && [ $1 != "delete" ] && [ $1 != "adventure" ])
 then
-	# First argument is neither "create" nor "delete"
+	# First argument is neither "create", nor "delete", nor "adventure"
 	
 	# Display error message
-	echo "ERROR first argument must be either """create""" or """delete""""
+	echo "ERROR first argument must be either """create""", or """delete""", or """adventure""""
 
 	# Exit with error
 	exit 1
@@ -355,10 +355,8 @@ then
 	echo ""
 	echo "########################"
 
-fi
-
 # If first argument is "delete"
-if ([ $1 == "delete" ])
+elif ([ $1 == "delete" ])
 then
 	# First argument is "delete"
 
@@ -468,4 +466,16 @@ then
 	echo "  Done"
 	echo ""
 	echo "########################"
+
+# If first argument is "adventure"
+elif ([ $1 == "adventure" ])
+then
+	# First argument is "adventure"
+
+	# If second argument is a server name that already exists in serverFolder
+
+	# Create server.properties
+
+	# unzip world folder
+
 fi
