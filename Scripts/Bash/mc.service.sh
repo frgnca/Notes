@@ -68,6 +68,22 @@ serverFolder=$currentFolder"servers/"
 
 # ToDo: If default-jre is not installed, install it #dpkg -l default-jre
 
+# Function to exit if received argument is a server name that already exists in serverFolder
+serverCheck ()
+{
+	# If received argument is a server name that already exists in serverFolder
+	if ([ -d $serverFolder$1 ])
+	then
+		# Received argument is a server name that already exists in serverFolder
+	
+		# Display error message
+		echo "ERROR serverName $1 already in use by $serverFolder$1/, cannot create"
+
+		# Exit with error
+		exit 1
+	fi
+}
+
 # If number of arguments recieved is not 2
 if ([ $# != 2 ])
 then
@@ -97,17 +113,8 @@ if ([ $1 == "create" ])
 then
 	# First argument is "create"
 	
-	# If second argument is a server name that already exists in serverFolder
-	if ([ -d $serverFolder$2 ])
-	then
-		# Second argument is a server name that already exists in serverFolder
-	
-		# Display error message
-		echo "ERROR serverName $2 already in use by $serverFolder$2/, cannot create"
-
-		# Exit with error
-		exit 1
-	fi
+	# Exit if second argument is a server name that already exists in serverFolder
+	serverCheck $2
 
 	# Set server name
 	serverName=$2
@@ -472,7 +479,8 @@ elif ([ $1 == "adventure" ])
 then
 	# First argument is "adventure"
 
-	# If second argument is a server name that already exists in serverFolder
+	# Exit if second argument is a server name that already exists in serverFolder
+	serverCheck $2
 
 	# Create server.properties
 
