@@ -84,6 +84,35 @@ serverCheck ()
 	fi
 }
 
+# Set server_port to first available port starting from given server_port
+server_portAvailable ()
+{
+	# Get a list of all the server sub folders*
+	declare -a serverFolders=$(find $serverFolder -maxdepth 1 -type d)
+
+	# For each subfolder*
+	for i in $serverFolders
+	do 
+		# Get server port line from server properties file
+		inUse_serverPort=$(grep "server-port=" $i"/server.properties")
+			
+		# Only keep port number and add a space at the end
+		inUse_serverPort=${inUse_serverPort:12:6}" "
+
+		# Add server port to port string (ex: "25566 25567 25569 ")
+		portString+=$inUse_serverPort
+	done
+
+	# While server port is in use by one of the current servers
+	while ( echo $portString | grep $server_port > /dev/null 2>&1 )
+	do
+		# Server port is in use by one of the current servers
+
+		# Increment server port
+		server_port=$(($server_port + 1))
+	done
+}
+
 # If number of arguments recieved is not 2
 if ([ $# != 2 ])
 then
@@ -158,36 +187,8 @@ then
 		worldFolderDisplay=""
 	fi
 
-	# Get a list of all the sub folders*
-	declare -a serverFolders=$(find $serverFolder -maxdepth 1 -type d)
-
-	# For each subfolder*
-	for i in $serverFolders
-	do 
-		# *Only go ahead if not the first result of the array, which is the folder itself and not a sub folder, OR the template folder
-		if [ "$i/" != "$templateFolder" ]
-		then
-			# Not the first result of the array
-			
-			# Get server port from server properties file
-			inUse_serverPort=$(grep "server-port=" $i"/server.properties")
-			
-			# Only keep port number and add a space at the end
-			inUse_serverPort=${inUse_serverPort:12:6}" "
-
-			# Add server port to port string (ex: "25566 25567 25569 ")
-			portString+=$inUse_serverPort
-		fi
-	done
-
-	# While server port is in use by one of the current servers
-	while ( echo $portString | grep $server_port > /dev/null 2>&1 )
-	do
-		# Server port is in use by one of the current servers
-
-		# Increment server port
-		server_port=$(($server_port + 1))
-	done
+	# Set server_port to first available port starting from given server_port
+	server_portAvailable
 
 	# Display instructions
 	echo ""
@@ -481,6 +482,9 @@ then
 
 	# Exit if second argument is a server name that already exists in serverFolder
 	serverCheck $2
+
+	# Set server_port to first available port starting from given server_port
+	server_portAvailable
 
 	# Create server.properties
 
