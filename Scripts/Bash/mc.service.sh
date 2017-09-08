@@ -391,13 +391,13 @@ then
 	echo "  mc.service delete"
 	echo ""
 	echo "########################"
-	echo ""
-	echo "         serverName: "$serverName
-	echo "         serverPort: "$server_port
-	echo "   minecraftVersion: *ToDo" #$minecraftVersion
-	echo "       allocatedRAM: *ToDo" #$allocatedRAM
-	echo "       serverFolder: "$serverFolder
-	echo ""
+	echo "########################"
+	echo "######## serverName: "$serverName
+	echo "######## serverPort: "$server_port
+	echo "## minecraftVersion: *ToDo" #$minecraftVersion
+	echo "###### allocatedRAM: *ToDo" #$allocatedRAM
+	echo "###### serverFolder: "$serverFolder
+	echo "########################"
 
 	## If the script recieved the "-y" argument
 	#if [ ""$1"" == "-y" ]
