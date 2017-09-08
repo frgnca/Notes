@@ -217,10 +217,10 @@ then
 		read -n1 -r -p "  Continue? [Y/n]" keypress
 	#fi
 
-	# If keypress was not either one of the Y, or y, or Enter key, or the flag -y
+	# If keypress was neither one of the Y, or y, or Enter key, or the flag -y
 	if !([ "$keypress" == "Y" ] || [ "$keypress" == "y" ] || [ "$keypress" == "" ] || [ "$keypress" == "-y" ])
 	then
-		# Keypress was not either one of the Y, or y, or Enter key
+		# Keypress was neither one of the Y, or y, or Enter key
 	
 		# If keypress was not Enter key
 		if !([ "$keypress" == "" ])
@@ -416,10 +416,10 @@ then
 		read -n1 -r -p "  Continue? [Y/n]" keypress
 	#fi
 
-	# If keypress was not either one of the Y, or y, or Enter key, or the flag -y
+	# If keypress was neither one of the Y, or y, or Enter key, or the flag -y
 	if !([ "$keypress" == "Y" ] || [ "$keypress" == "y" ] || [ "$keypress" == "" ] || [ "$keypress" == "-y" ])
 	then
-		# Keypress was not either one of the Y, or y, or Enter key
+		# Keypress was neither one of the Y, or y, or Enter key
 	
 		# If keypress was not Enter key
 		if !([ "$keypress" == "" ])
