@@ -495,13 +495,164 @@ then
 		exit 1
 	fi
 
+	# Set server name
+	serverName=$2
+
+	# Get the value of level-name from unzip -l
+	level_name="$(unzip -l $templateFolder$serverName".zip" | sed '4q;d' | awk -F"   " '{print $4}' | rev | cut -c 2- | rev)"
+
 	# Set server_port to first available port starting from given server_port
 	server_portAvailable > /dev/null 2>&1
 
-	echo $server_port
+	# Display instructions
+	echo ""
+	echo "########################"
+	echo ""
+	echo "  mc.service adventure"
+	echo ""
+	echo "########################"
+	echo ""
+	echo "         serverName: "$serverName
+	echo "         serverPort: "$server_port
+	echo "   minecraftVersion: "$minecraftVersion
+	echo "       allocatedRAM: "$allocatedRAM
+	echo ""
 
-	# Create server.properties
+	# Wait for keypress from user
+	read -n1 -r -p "  Continue? [Y/n]" keypress
 
-	# unzip world folder
+	# If keypress was neither one of the Y, or y, or Enter key, or the flag -y
+	if !([ "$keypress" == "Y" ] || [ "$keypress" == "y" ] || [ "$keypress" == "" ] || [ "$keypress" == "-y" ])
+	then
+		# Keypress was neither one of the Y, or y, or Enter key
+	
+		# If keypress was not Enter key
+		if !([ "$keypress" == "" ])
+		then
+			# Add new line
+			echo ""
+		fi
+	
+		# End script
+		exit 0
+	fi
 
+	# If keypress was either the Y, or y key
+	if ([ "$keypress" == "Y" ] || [ "$keypress" == "y" ])
+	then
+		# Add new line
+		echo ""
+	fi
+	keypress=/dev/null
+
+	# Display instructions
+	echo ""
+	echo "  Wait time  1min (100% when done)"
+
+	# If minecraft_server.jar of the requested version is not already downloaded in template folder
+	if !([ -f $templateFolder"minecraft_server.$minecraftVersion.jar" ])
+	then
+		# Download minecraft_server.jar to install folder
+		wget -P $templateFolder "https://s3.amazonaws.com/Minecraft.Download/versions/$minecraftVersion/minecraft_server.$minecraftVersion.jar" > /dev/null 2>&1
+	fi
+
+	# Create server folder
+	mkdir $serverFolder$serverName #> /dev/null 2>&1
+
+	# Unzip world folder
+	unzip $templateFolder$serverName".zip" -d $serverFolder$serverName > /dev/null 2>&1
+
+	# Copy minecraft_server.jar in server folder
+	cp $templateFolder"minecraft_server.$minecraftVersion.jar" $serverFolder$serverName"/minecraft_server.jar"
+
+	# Overwrite some properties for imported adventure world gameplay
+	force_gamemode="true"
+	gamemode="2"
+	spawn_monsters="false"
+	pvp="false"
+	level_type="DEFAULT"
+	enable_command_block="true"
+	resource_pack_sha1="" #=""
+	spawn_npcs="false"
+	allow_flight="true"
+	resource_pack="" #=""
+	spawn_animals="false"
+	motd="[Adventure] "$level_name
+
+	# Create server.properties in server folder
+	echo "#Minecraft server properties" > $serverFolder$serverName"/server.properties"
+	echo "#(File Modification Datestamp)" >> $serverFolder$serverName"/server.properties"
+	echo "max-tick-time="$max_tick_time >> $serverFolder$serverName"/server.properties"
+	echo "generator-settings="$generator_settings >> $serverFolder$serverName"/server.properties"
+	echo "allow-nether="$allow_nether >> $serverFolder$serverName"/server.properties"
+	echo "force-gamemode="$force_gamemode >> $serverFolder$serverName"/server.properties"
+	echo "gamemode="$gamemode >> $serverFolder$serverName"/server.properties"
+	echo "enable-query="$enable_query >> $serverFolder$serverName"/server.properties"
+	echo "player-idle-timeout="$player_idle_timeout >> $serverFolder$serverName"/server.properties"
+	echo "difficulty="$difficulty >> $serverFolder$serverName"/server.properties"
+	echo "spawn-monsters="$spawn_monsters >> $serverFolder$serverName"/server.properties"
+	echo "op-permission-level="$op_permission_level >> $serverFolder$serverName"/server.properties"
+	echo "announce-player-achievements="$announce_player_achievements >> $serverFolder$serverName"/server.properties"
+	echo "pvp="$pvp >> $serverFolder$serverName"/server.properties"
+	echo "snooper-enabled="$snooper_enabled >> $serverFolder$serverName"/server.properties"
+	echo "level-type="$level_type >> $serverFolder$serverName"/server.properties"
+	echo "hardcore="$hardcore >> $serverFolder$serverName"/server.properties"
+	echo "enable-command-block="$enable_command_block >> $serverFolder$serverName"/server.properties"
+	echo "max-players="$max_players >> $serverFolder$serverName"/server.properties"
+	echo "network-compression-threshold="$network_compression_threshold >> $serverFolder$serverName"/server.properties"
+	echo "resource-pack-sha1="$resource_pack_sha1 >> $serverFolder$serverName"/server.properties"
+	echo "max-world-size="$max_world_size >> $serverFolder$serverName"/server.properties"
+	echo "server-port="$server_port >> $serverFolder$serverName"/server.properties"
+	echo "server-ip="$server_ip >> $serverFolder$serverName"/server.properties"
+	echo "spawn-npcs="$spawn_npcs >> $serverFolder$serverName"/server.properties"
+	echo "allow-flight="$allow_flight >> $serverFolder$serverName"/server.properties"
+	echo "level-name="$level_name >> $serverFolder$serverName"/server.properties"
+	echo "view-distance="$view_distance >> $serverFolder$serverName"/server.properties"
+	echo "resource-pack="$resource_pack >> $serverFolder$serverName"/server.properties"
+	echo "spawn-animals="$spawn_animals >> $serverFolder$serverName"/server.properties"
+	echo "white-list="$white_list >> $serverFolder$serverName"/server.properties"
+	echo "generate-structures="$generate_structures >> $serverFolder$serverName"/server.properties"
+	echo "online-mode="$online_mode >> $serverFolder$serverName"/server.properties"
+	echo "max-build-height="$max_build_height >> $serverFolder$serverName"/server.properties"
+	echo "level-seed="$level_seed >> $serverFolder$serverName"/server.properties"
+	echo "prevent-proxy-connections="$prevent_proxy_connections >> $serverFolder$serverName"/server.properties"
+	echo "motd="$motd >> $serverFolder$serverName"/server.properties"
+	echo "enable-rcon="$enable_rcon >> $serverFolder$serverName"/server.properties"
+
+	# Create eula.txt in server folder to accept eula so server can initialize
+	echo "eula=true" > $serverFolder$serverName/eula.txt
+
+	# Create named pipe in server folder to send commands to minecraft server process
+	mkfifo $serverFolder$serverName/fifo
+
+	# Add exception to firewall to open server to Internet
+	ufw allow $server_port > /dev/null 2>&1
+
+	# Create systemd unit file using provided script properties
+	echo "[Unit]" > /etc/systemd/system/minecraft.$serverName.service
+	echo "Description=Minecraft Server $serverName" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "After=network.target" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "[Service]" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "WorkingDirectory=$serverFolder$serverName" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "ExecStart=/bin/bash -c 'tail -n +1 -f $serverFolder$serverName/fifo | /usr/bin/java -Xms$allocatedRAM -Xmx$allocatedRAM -jar $serverFolder$serverName/minecraft_server.jar nogui'" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "ExecStop=/bin/bash -c 'echo stop > $serverFolder$serverName/fifo'" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "Restart=always" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "[Install]" >> /etc/systemd/system/minecraft.$serverName.service
+	echo "WantedBy=multi-user.target" >> /etc/systemd/system/minecraft.$serverName.service
+
+	# Enable minecraft daemon
+	systemctl enable minecraft.$serverName.service > /dev/null 2>&1
+
+	# Start minecraft daemon
+	systemctl start minecraft.$serverName.service
+
+	# Display instructions
+	echo ""
+	echo "########################"
+	echo ""
+	echo "  Done"
+	echo ""
+	echo "########################"
 fi
