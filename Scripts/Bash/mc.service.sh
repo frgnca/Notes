@@ -94,7 +94,7 @@ server_portAvailable ()
 	for i in $serverFolders
 	do 
 		# Get server port line from server properties file
-		inUse_serverPort=$(grep "server-port=" $i"/server.properties")
+		inUse_serverPort=$(grep "server-port=" $i"/server.properties" > /dev/null 2>&1)
 			
 		# Only keep port number and add a space at the end
 		inUse_serverPort=${inUse_serverPort:12:6}" "
@@ -482,6 +482,18 @@ then
 
 	# Exit if second argument is a server name that already exists in serverFolder
 	serverCheck $2
+
+	# If second argument is a server name that does not exists in templateFolder
+	if [ ! -f $templateFolder$2".zip" ]
+	then
+		# Second argument is a server name that does not exists in templateFolder
+
+		# Display error message
+		echo "ERROR $2.zip does not exists in $templateFolder, cannot import"
+
+		# Exit with error
+		exit 1
+	fi
 
 	# Set server_port to first available port starting from given server_port
 	server_portAvailable
