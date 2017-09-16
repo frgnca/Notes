@@ -94,7 +94,7 @@ server_portAvailable ()
 	for i in $serverFolders
 	do 
 		# Get server port line from server properties file
-		inUse_serverPort=$(grep "server-port=" $i"/server.properties" > /dev/null 2>&1)
+		inUse_serverPort=$(grep "server-port=" $i"/server.properties")
 			
 		# Only keep port number and add a space at the end
 		inUse_serverPort=${inUse_serverPort:12:6}" "
@@ -496,7 +496,9 @@ then
 	fi
 
 	# Set server_port to first available port starting from given server_port
-	server_portAvailable
+	server_portAvailable > /dev/null 2>&1
+
+	echo $server_port
 
 	# Create server.properties
 
