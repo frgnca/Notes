@@ -6,7 +6,10 @@
   PowerShell script that downloads upvoted reddit pictures of tracked subreddits
 
 
-  ToDo: add support for 4 character extensions
+  ToDo:
+  add support for 4 character extensions
+  add support for url that do not end with file extension
+  add support for feed list to pull json file from
 #>
 
 ################################################################################
@@ -27,7 +30,6 @@ $extensionList = "
 bmp
 gif
 jpg
-jpeg
 png
 "
 ########################
