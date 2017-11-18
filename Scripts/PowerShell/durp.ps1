@@ -7,29 +7,29 @@
 
 
   ToDo:
-  add support for 4 character extensions
-  add support for url that do not end with file extension
-  add support for feed list to pull json file from
+  url that do not end with file extension
+  list of feed to pull json file from
 #>
 
 ################################################################################
-# List of tracked subreddits
-$trackedList = "
-Art
-aww
-"
-
 # Folder where to download pictures
 $downloadFolder = "D:\frgnca\Images\durp"
 
 # Link of private feed to pull json file from (see your https://www.reddit.com/prefs/feeds/)
 $jsonLink = ""
 
+# List of tracked subreddits
+$trackedList = "
+Art
+aww
+"
+
 # Supported file extension list
 $extensionList = "
 bmp
 gif
 jpg
+jpeg
 png
 "
 ########################
@@ -47,7 +47,7 @@ foreach($upvote in $upvoteList)
 	$current_url = $upvote.data.url
 
 	# Find current url extension
-	$current_urlExtension = $current_url.Substring($current_url.Length - 3, 3) # ToDo: add support for 4 character extensions
+	$current_urlExtension = $current_url.Substring($current_url.LastIndexOf(".") + 1) 
 
 	# If tracked subreddits list contains current subreddit, and supported extension list contains current url extension
 	if( ($trackedList -like "*$current_subreddit*") -and ($extensionList -like "*$current_urlExtension*") )
@@ -62,7 +62,7 @@ foreach($upvote in $upvoteList)
 		$filename = $current_permalink.Substring(0, $current_permalink.Length - 1)
 		# Find position of now last "/"
 		$position = $filename.LastIndexOf("/")
-		# Replace "/" with "_"
+		# Replace this "/" with "_" to become allowed filename
 		$filename = $filename.Remove($position, 1).Insert($position, "_")
 		# Find position of now last "/"
 		$position = $filename.LastIndexOf("/")
