@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+# Copyright (c) 2017-2018 Francois Gendron <fg@frgn.ca>
 # GNU Affero General Public License v3.0
 
 # setupTemplate.sh
@@ -26,7 +26,7 @@ sudo apt-get update > /dev/null 2>&1 && sudo apt-get -y upgrade > /dev/null 2>&1
 
 # Create shell script to remove template user and script call from /etc/rc.local
 echo "#!/bin/bash" > removeTemplateUser.sh
-echo "# Copyright (c) 2017 Francois Gendron <fg@frgn.ca>" >> removeTemplateUser.sh
+echo "# Copyright (c) 2017-2018 Francois Gendron <fg@frgn.ca>" >> removeTemplateUser.sh
 echo "# GNU Affero General Public License v3.0" >> removeTemplateUser.sh
 echo "" >> removeTemplateUser.sh
 echo "# removeTemplateUser.sh" >> removeTemplateUser.sh
