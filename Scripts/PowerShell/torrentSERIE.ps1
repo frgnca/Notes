@@ -1,5 +1,5 @@
 <#
-  Copyright (c) 2017 Francois Gendron <fg@frgn.ca>
+  Copyright (c) 2017-2018 Francois Gendron <fg@frgn.ca>
   GNU Affero General Public License v3.0
 
   torrentSERIE.ps1
