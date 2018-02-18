@@ -26,11 +26,16 @@ aww
 
 # Supported file extension list
 $extensionList = "
+avi
 bmp
 gif
 gifv
 jpg
 jpeg
+mkv
+mov
+mp4
+mpeg
 png
 "
 
