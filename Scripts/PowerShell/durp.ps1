@@ -3,7 +3,7 @@
   GNU Affero General Public License v3.0
 
   durp.ps1
-  PowerShell script that downloads upvoted reddit pictures of tracked subreddits
+  PowerShell service that downloads upvoted reddit pictures of tracked subreddits
 
 
   ToDo:
@@ -32,62 +32,85 @@ jpg
 jpeg
 png
 "
+
+# Wait time in seconds between each check from the service for a change in state
+$refreshRate = 1
 ########################
-# Convert json file to object
-$durp = Invoke-WebRequest $jsonLink | ConvertFrom-Json
-
-# Get list of upvotes
-$upvoteList = $durp.data.children
-
-# For each upvote in the list of upvotes
-foreach($upvote in $upvoteList)
+# Run continuously to act as a service/daemon
+while($true)
 {
-	# Get current data
-	$current_subreddit = $upvote.data.subreddit
-	$current_url = $upvote.data.url
+	# Get json file and convert to object
+	$durp = Invoke-WebRequest $jsonLink | ConvertFrom-Json
 
-	# Find current url extension
-	$current_urlExtension = $current_url.Substring($current_url.LastIndexOf(".") + 1) 
+    # If json has changed
+    if($durp.data.after -ne $old_durp_data_after)
+    {
+        # Json has changed
+        
+        # Save data to compare json
+        $old_durp_data_after = $durp.data.after
 
-	# If tracked subreddits list contains current subreddit, and supported extension list contains current url extension
-	if( ($trackedList -like "*$current_subreddit*") -and ($extensionList -like "*$current_urlExtension*") )
-	{
-		# Tracked subreddits list contains current subreddit, and supported extension list contains current url
+	    # Get list of upvotes
+	    $upvoteList = $durp.data.children
 
-		# Get current data
-		$current_permalink = $upvote.data.permalink
+	    # For each upvote in the list of upvotes
+	    foreach($upvote in $upvoteList)
+	    {
+            # Get current data
+		    $current_subreddit = $upvote.data.subreddit
+		    $current_url = $upvote.data.url
 
-		# Create filename path from current permalink
-		# Remove last character which is always "/"
-		$filename = $current_permalink.Substring(0, $current_permalink.Length - 1)
-		# Find position of now last "/"
-		$position = $filename.LastIndexOf("/")
-		# Replace this "/" with "_" to become allowed filename
-		$filename = $filename.Remove($position, 1).Insert($position, "_")
-		# Find position of now last "/"
-		$position = $filename.LastIndexOf("/")
-		# Keep only text from that point
-		$filename = $filename.Substring($position + 1)
-		# Add file extension
-		$filename = $filename+"."+$current_urlExtension
-		# Add subreddit
-		$filename = $filename.Insert(0, $current_subreddit+"\")
-		# Add full path
-		$filename = $downloadFolder+"\"+$filename
+		    # Find current url extension
+		    $current_urlExtension = $current_url.Substring($current_url.LastIndexOf(".") + 1) 
+
+		    # If tracked subreddits list contains current subreddit, and supported extension list contains current url extension
+		    if( ($trackedList -like "*$current_subreddit*") -and ($extensionList -like "*$current_urlExtension*") )
+		    {
+			        # Tracked subreddits list contains current subreddit, and supported extension list contains current url
+
+			        # Get current data
+			        $current_permalink = $upvote.data.permalink
+
+			        # Create filename path from current permalink
+			        # Remove last character which is always "/"
+			        $filename = $current_permalink.Substring(0, $current_permalink.Length - 1)
+			        # Find position of now last "/"
+			        $position = $filename.LastIndexOf("/")
+			        # Replace this "/" with "_" to become allowed filename
+			        $filename = $filename.Remove($position, 1).Insert($position, "_")
+			        # Find position of now last "/"
+			        $position = $filename.LastIndexOf("/")
+			        # Keep only text from that point
+			        $filename = $filename.Substring($position + 1)
+			        # Add file extension
+			        $filename = $filename+"."+$current_urlExtension
+			        # Add subreddit
+			        $filename = $filename.Insert(0, $current_subreddit+"\")
+			        # Add full path
+			        $filename = $downloadFolder+"\"+$filename
 		
-		# Create sureddit folder path
-		$subredditFolder = $downloadFolder+"\"+$current_subreddit
+			        # Create sureddit folder path
+			        $subredditFolder = $downloadFolder+"\"+$current_subreddit
 
-		# If subreddit folder does not already exists
-		if(-not (Test-Path $subredditFolder))
-		{
-			# Subreddit folder does not already exists
+			        # If subreddit folder does not already exists
+			        if(-not (Test-Path $subredditFolder))
+			        {
+				        # Subreddit folder does not already exists
 
-			# Create subreddit folder
-			New-Item $subredditFolder -type directory
-		}
+				        # Create subreddit folder
+				        New-Item $subredditFolder -type directory
+			        }
 
-		# Download file in subreddit folder
-		Invoke-WebRequest -Uri $current_url -OutFile $filename 
-	}
+			        # Download file in subreddit folder
+			        Invoke-WebRequest -Uri $current_url -OutFile $filename 
+		        }
+	    }
+    }
+    else
+    {
+        # Json has not changed
+
+        # Wait
+        sleep $refreshRate
+    }
 }
