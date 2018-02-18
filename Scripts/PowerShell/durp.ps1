@@ -47,7 +47,7 @@ while($true)
     {
         # Json has changed
         
-        # Save data to compare json
+        # Save data from new json to compare later
         $old_durp_data_after = $durp.data.after
 
 	    # Get list of upvotes
@@ -56,16 +56,28 @@ while($true)
 	    # For each upvote in the list of upvotes
 	    foreach($upvote in $upvoteList)
 	    {
-            # Get current data
-		    $current_subreddit = $upvote.data.subreddit
-		    $current_url = $upvote.data.url
+            # If it is the last most recent upvote
+            if($upvote.data.id -eq $most_recent_upvote)
+            {
+                # It is the last most recent upvote
 
-		    # Find current url extension
-		    $current_urlExtension = $current_url.Substring($current_url.LastIndexOf(".") + 1) 
+                # Stop checking for new upvotes
+                break
+            }
+            else
+            {
+                # It is not the last most recent upvote
 
-		    # If tracked subreddits list contains current subreddit, and supported extension list contains current url extension
-		    if( ($trackedList -like "*$current_subreddit*") -and ($extensionList -like "*$current_urlExtension*") )
-		    {
+                # Get current data
+		        $current_subreddit = $upvote.data.subreddit
+		        $current_url = $upvote.data.url
+
+		        # Find current url extension
+		        $current_urlExtension = $current_url.Substring($current_url.LastIndexOf(".") + 1) 
+
+		        # If tracked subreddits list contains current subreddit, and supported extension list contains current url extension
+		        if( ($trackedList -like "*$current_subreddit*") -and ($extensionList -like "*$current_urlExtension*") )
+		        {
 			        # Tracked subreddits list contains current subreddit, and supported extension list contains current url
 
 			        # Get current data
@@ -104,7 +116,11 @@ while($true)
 			        # Download file in subreddit folder
 			        Invoke-WebRequest -Uri $current_url -OutFile $filename 
 		        }
+            }
 	    }
+
+        # Save data from new most recent upvote to compare later
+        $most_recent_upvote = $upvoteList[0].data.id
     }
     else
     {
