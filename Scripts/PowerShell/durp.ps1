@@ -28,6 +28,7 @@ aww
 $extensionList = "
 bmp
 gif
+gifv
 jpg
 jpeg
 png
@@ -72,7 +73,7 @@ while($true)
 		        $current_subreddit = $upvote.data.subreddit
 		        $current_url = $upvote.data.url
 
-		        # Find current url extension
+                # Find current url extension
 		        $current_urlExtension = $current_url.Substring($current_url.LastIndexOf(".") + 1) 
 
 		        # If tracked subreddits list contains current subreddit, and supported extension list contains current url extension
@@ -94,7 +95,20 @@ while($true)
 			        $position = $filename.LastIndexOf("/")
 			        # Keep only text from that point
 			        $filename = $filename.Substring($position + 1)
-			        # Add file extension
+			        
+                    # If the extension is gifv from Imgur.com
+                    if($current_urlExtension -eq "gifv")
+                    {
+                        # The extension is gifv
+
+                        # Replace by mp4 in filename
+                        $current_urlExtension = "mp4"
+
+                        # Replace by mp4 in current url
+                        $current_url = $current_url.Replace("gifv", "mp4")
+                    }
+
+                    # Add file extension
 			        $filename = $filename+"."+$current_urlExtension
 			        # Add subreddit
 			        $filename = $filename.Insert(0, $current_subreddit+"\")
