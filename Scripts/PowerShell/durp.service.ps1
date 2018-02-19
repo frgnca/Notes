@@ -3,7 +3,7 @@
   GNU Affero General Public License v3.0
 
   durp.service.ps1
-  PowerShell service that downloads upvoted reddit pictures of tracked subreddits
+  PowerShell service to download upvoted reddit pictures of tracked subreddits
 
 
   ToDo:
