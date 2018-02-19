@@ -2,7 +2,7 @@
   Copyright (c) 2017-2018 Francois Gendron <fg@frgn.ca>
   GNU Affero General Public License v3.0
 
-  durp.ps1
+  durp.service.ps1
   PowerShell service that downloads upvoted reddit pictures of tracked subreddits
 
 
