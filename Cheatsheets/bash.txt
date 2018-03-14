@@ -7,4 +7,4 @@
 
 ################################################################################
 # os_update
-sudo /bin/bash -c 'apt-get update && apt-get -y upgrade && apt-get -y autoremove'
+sudo /bin/bash -c 'apt-get -y autoremove && apt-get update && apt-get -y upgrade && apt-get -y autoremove && if [ -f /var/run/reboot-required ]; then echo "    REBOOT REQUIRED"; fi'
